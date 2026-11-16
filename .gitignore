@@ -1,0 +1,22 @@
+# Python caches
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Downloaded datasets (not redistributed)
+ch4_micdp/data/raw/*
+!ch4_micdp/data/raw/README.md
+ch5_ldpmic/data/cache/
+
+# Large or regenerated outputs
+ch4_micdp/results/ch4/cache/
+ch4_micdp/results/ch4/*/cache/
+ch4_micdp/results/ch4/draft3_smoke/
+ch7_privagent/results/ch7_smoke/
+ch8_user_study/outputs/
+CUDP.zip

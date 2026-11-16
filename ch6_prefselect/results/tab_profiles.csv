@@ -1,0 +1,17 @@
+dataset,profile,C(0.1),C(0.3),C(1),C(5),C(10),eps_linear,eps_exponential
+Adult,Privacy-focused,0.759,0.772,0.85,0.546,0.241,1.0,0.1
+Adult,Accuracy-focused,0.259,0.281,0.605,0.853,0.741,5.0,10.0
+Adult,Balanced,0.512,0.532,0.718,0.683,0.488,1.0,0.1
+Adult,Resource-constrained,0.512,0.532,0.718,0.683,0.488,1.0,0.1
+CDC-Diabetes,Privacy-focused,0.73,0.806,0.853,0.556,0.27,1.0,0.1
+CDC-Diabetes,Accuracy-focused,0.231,0.42,0.657,0.866,0.769,5.0,10.0
+CDC-Diabetes,Balanced,0.474,0.598,0.737,0.705,0.526,1.0,0.3
+CDC-Diabetes,Resource-constrained,0.474,0.598,0.737,0.705,0.526,1.0,0.3
+CalHousing,Privacy-focused,0.643,0.638,0.617,0.459,0.357,0.1,0.1
+CalHousing,Accuracy-focused,0.167,0.164,0.154,0.316,0.833,10.0,10.0
+CalHousing,Balanced,0.375,0.37,0.353,0.364,0.625,10.0,10.0
+CalHousing,Resource-constrained,0.375,0.37,0.353,0.364,0.625,10.0,10.0
+Appliances,Privacy-focused,1.0,0.98,0.909,0.505,0.0,0.1,0.1
+Appliances,Accuracy-focused,1.0,0.98,0.909,0.505,0.0,0.1,0.1
+Appliances,Balanced,1.0,0.98,0.909,0.505,0.0,0.1,0.1
+Appliances,Resource-constrained,1.0,0.98,0.909,0.505,0.0,0.1,0.1

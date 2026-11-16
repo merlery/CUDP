@@ -1,0 +1,1 @@
+python -m src.draft3: 58.1 min wall clock (3487 s); units run this time: 60; sum of unit times 115.8 min (2 workers); by part (sum over units, min): refits (A.1, A.2, B) 29.8, Part C 31.8, Part D 54.2

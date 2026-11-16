@@ -1,0 +1,17 @@
+PASS unit tests (23 passed in 0.94s)
+PASS expert and uniform defaults select the same eps* (adult, linear): 1 and 1
+PASS expert and uniform defaults select the same eps* (adult, exponential): 0.1 and 0.1
+PASS expert and uniform defaults select the same eps* (cdc, linear): 1 and 1
+PASS expert and uniform defaults select the same eps* (cdc, exponential): 0.3 and 0.3
+PASS Table 7.3 (adult, linear): profiles [1.0, 5.0, 1.0, 1.0] (want [1, 5, 1, 1]), default 1 (want 1)
+PASS Table 7.3 (adult, exponential): profiles [0.1, 10.0, 0.1, 0.1] (want [0.1, 10, 0.1, 0.1]), default 0.1 (want 0.1)
+PASS Table 7.3 (cdc, linear): profiles [1.0, 5.0, 1.0, 1.0] (want [1, 5, 1, 1]), default 1 (want 1)
+PASS Table 7.3 (cdc, exponential): profiles [0.1, 10.0, 0.3, 0.3] (want [0.1, 10, 0.3, 0.3]), default 0.3 (want 0.3)
+PASS Oracle (adult, exponential): agreement 1.0000, max |closeness loss| 0.00e+00, users 40000
+PASS Oracle (adult, linear): agreement 1.0000, max |closeness loss| 0.00e+00, users 40000
+PASS Oracle (cdc, exponential): agreement 1.0000, max |closeness loss| 0.00e+00, users 40000
+PASS Oracle (cdc, linear): agreement 1.0000, max |closeness loss| 0.00e+00, users 40000
+PASS expert and uniform defaults give the same eps* for every user and setting (160000 cases)
+PASS tau = 1e-06, LP-LA prompts: privacy share on the wrong side of 0.5 for 0 (vote) and 0 (Bayes) of 18041 users with |pi - 0.5| > 0.05
+INFO repair rate (PrivAgent-6, uniform population) by tau: 0.05: 0.0009, 0.1: 0.0036, 0.2: 0.0125, 0.4: 0.0232
+INFO share of undefined selections (main analysis, all populations and settings): expert: 0.0000, lpla: 0.0000, lpla_bayes: 0.0000, oracle: 0.0000, pa6: 0.0000, pa6_bayes: 0.0000, slider: 0.0000, uniform_default: 0.0000

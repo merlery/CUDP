@@ -1,0 +1,3 @@
+Pre-registration commit: 7bffabb6dc67fb8829e0b8279c1d2e02e6eda1b0
+Date: 2026-10-26 14:44:30 -0700
+Committed: hypotheses.md (H1-H5 with decision rules), config.yaml (all settings), src/ (simulation, statistics with the decision rules, report) and tests/. Before the commit only the smoke run (2 replications, 100 users) was executed, to check that the code runs; no setting was chosen from it.

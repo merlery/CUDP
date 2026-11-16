@@ -1,0 +1,9 @@
+dataset,lp_map,eps=0.1,eps=0.3,eps=1,eps=5,eps=10,undefined
+Adult,linear,22,13,86,89,20,0
+Adult,exponential,131,0,0,0,99,0
+CDC-Diabetes,linear,20,21,80,89,20,0
+CDC-Diabetes,exponential,71,60,0,0,99,0
+CalHousing,linear,88,0,0,0,142,0
+CalHousing,exponential,101,0,0,0,129,0
+Appliances,linear,210,0,0,0,0,20
+Appliances,exponential,210,0,0,0,0,20

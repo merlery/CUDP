@@ -1,0 +1,1 @@
+python -m src.run: 92.8 s wall clock (20 replications, 720000 user-method rows, 2880000 decisions)

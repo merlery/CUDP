@@ -1,0 +1,100 @@
+Chapter 4 MIC-DP experiment | config hash 61ef27e23617 | 2026-10-01 15:47:57
+
+== Sanity 1: unit tests
+  [PASS] all unit tests pass (pytest exit code 0)
+
+== Data
+  [PASS] adult: delta=1e-05 < 1/n_train = 3.15e-05
+  adult         task=classification final d=12  n_raw=48842 n_used=48842 public/train/test=7327/31746/9769
+  [PASS] cdc_diabetes: delta=1e-05 < 1/n_train = 2.56e-05
+  cdc_diabetes  task=classification final d=21  n_raw=253680 n_used=60000 public/train/test=9000/39000/12000
+  [PASS] calhousing: delta=1e-05 < 1/n_train = 7.45e-05
+  calhousing    task=regression     final d= 8  n_raw=20640 n_used=20640 public/train/test=3096/13416/4128
+  [PASS] appliances: delta=1e-05 < 1/n_train = 7.80e-05
+  appliances    task=regression     final d=27  n_raw=19735 n_used=19735 public/train/test=2961/12827/3947
+  [PASS] syn_lin: delta=1e-05 < 1/n_train = 7.69e-05
+  syn_lin       task=regression     final d=20  n_raw=20000 n_used=20000 public/train/test=3000/13000/4000
+  [PASS] syn_nl_low: delta=1e-05 < 1/n_train = 7.69e-05
+  syn_nl_low    task=regression     final d=20  n_raw=20000 n_used=20000 public/train/test=3000/13000/4000
+  [PASS] syn_nl_mid: delta=1e-05 < 1/n_train = 7.69e-05
+  syn_nl_mid    task=regression     final d=20  n_raw=20000 n_used=20000 public/train/test=3000/13000/4000
+  [PASS] syn_nl_high: delta=1e-05 < 1/n_train = 7.69e-05
+  syn_nl_high   task=regression     final d=20  n_raw=20000 n_used=20000 public/train/test=3000/13000/4000
+  [PASS] scores use the private-train split (and the public split for MIC-Public); grid cut points and the target range for the moment release come from the public split only
+  wrote datasets.csv and scores_raw.csv (MIC statistics in datasets.csv: FG-MIC on the PUBLIC split)
+
+== Sanity 6: score-privatization noise sigma_s = sqrt(d) * 3(1+ln n)/(n ln 2) * c(rho*eps, rho*delta), rho = 0.2
+  dataset        d   eps=0.1    eps=0.3    eps=0.5    eps=1      eps=5      eps=10   
+  adult         12      0.8225     0.2990     0.1862     0.0977     0.0219     0.0116
+  cdc_diabetes  21      0.9018     0.3278     0.2042     0.1072     0.0240     0.0127
+  calhousing     8      1.4688     0.5340     0.3325     0.1745     0.0391     0.0207
+  appliances    27      2.8101     1.0216     0.6362     0.3339     0.0748     0.0396
+  syn_lin       20      2.3894     0.8687     0.5410     0.2839     0.0636     0.0337
+  syn_nl_low    20      2.3894     0.8687     0.5410     0.2839     0.0636     0.0337
+  syn_nl_mid    20      2.3894     0.8687     0.5410     0.2839     0.0636     0.0337
+  syn_nl_high   20      2.3894     0.8687     0.5410     0.2839     0.0636     0.0337
+  (FG-MIC scores live in [0, 1]; compare with the spread of the scores in scores_raw.csv)
+
+== Pre-flight: Uniform distortion vs sqrt(d) c sqrt(2/pi) (one draw, trial 0)
+  [PASS] all pre-flight Uniform distortions within 2%
+
+== Running 328 of 390 trial tasks (rest cached) with n_jobs=2
+  10/328 tasks done | last: main appliances t=11 (63s) | elapsed 5.3 min | ETA 169.9 min
+  20/328 tasks done | last: main appliances t=21 (62s) | elapsed 10.5 min | ETA 161.8 min
+  30/328 tasks done | last: main syn_lin t=1 (54s) | elapsed 15.5 min | ETA 154.4 min
+  40/328 tasks done | last: main syn_lin t=11 (53s) | elapsed 20.0 min | ETA 143.8 min
+  50/328 tasks done | last: main syn_lin t=21 (53s) | elapsed 24.4 min | ETA 135.8 min
+  60/328 tasks done | last: main syn_nl_low t=1 (51s) | elapsed 28.8 min | ETA 128.8 min
+  70/328 tasks done | last: main syn_nl_low t=10 (52s) | elapsed 33.1 min | ETA 122.1 min
+  80/328 tasks done | last: main syn_nl_low t=21 (51s) | elapsed 37.4 min | ETA 115.8 min
+  90/328 tasks done | last: main syn_nl_mid t=1 (49s) | elapsed 41.5 min | ETA 109.9 min
+  100/328 tasks done | last: main syn_nl_mid t=11 (47s) | elapsed 45.5 min | ETA 103.7 min
+  110/328 tasks done | last: main syn_nl_mid t=20 (48s) | elapsed 49.4 min | ETA 97.9 min
+  120/328 tasks done | last: main syn_nl_high t=1 (47s) | elapsed 53.5 min | ETA 92.7 min
+  130/328 tasks done | last: main syn_nl_high t=11 (48s) | elapsed 57.4 min | ETA 87.4 min
+  140/328 tasks done | last: main syn_nl_high t=21 (47s) | elapsed 61.3 min | ETA 82.3 min
+  150/328 tasks done | last: main calhousing t=1 (32s) | elapsed 64.9 min | ETA 77.0 min
+  160/328 tasks done | last: main calhousing t=11 (33s) | elapsed 67.6 min | ETA 71.0 min
+  170/328 tasks done | last: main calhousing t=21 (33s) | elapsed 70.4 min | ETA 65.4 min
+  180/328 tasks done | last: sens cdc_diabetes t=1 (48s) | elapsed 73.3 min | ETA 60.3 min
+  190/328 tasks done | last: sens cdc_diabetes t=11 (49s) | elapsed 77.3 min | ETA 56.2 min
+  200/328 tasks done | last: sens cdc_diabetes t=21 (48s) | elapsed 81.3 min | ETA 52.0 min
+  210/328 tasks done | last: sens adult t=1 (32s) | elapsed 85.0 min | ETA 47.8 min
+  220/328 tasks done | last: sens adult t=11 (31s) | elapsed 87.6 min | ETA 43.0 min
+  230/328 tasks done | last: sens adult t=21 (31s) | elapsed 90.2 min | ETA 38.4 min
+  240/328 tasks done | last: sens appliances t=1 (25s) | elapsed 92.7 min | ETA 34.0 min
+  250/328 tasks done | last: sens appliances t=11 (25s) | elapsed 94.8 min | ETA 29.6 min
+  260/328 tasks done | last: sens appliances t=21 (25s) | elapsed 96.9 min | ETA 25.3 min
+  270/328 tasks done | last: sens syn_nl_mid t=1 (21s) | elapsed 98.9 min | ETA 21.3 min
+  280/328 tasks done | last: sens syn_nl_mid t=11 (21s) | elapsed 100.7 min | ETA 17.3 min
+  290/328 tasks done | last: sens syn_nl_mid t=21 (22s) | elapsed 102.5 min | ETA 13.4 min
+  300/328 tasks done | last: sens calhousing t=1 (14s) | elapsed 104.1 min | ETA 9.7 min
+  310/328 tasks done | last: sens calhousing t=11 (14s) | elapsed 105.3 min | ETA 6.1 min
+  320/328 tasks done | last: sens calhousing t=21 (14s) | elapsed 106.5 min | ETA 2.7 min
+  328/328 tasks done | last: sens calhousing t=29 (14s) | elapsed 107.5 min | ETA 0.0 min
+  trial loop wall time: 107.5 min
+  wrote raw_trials.parquet (26880 rows) and weights.parquet (268080 rows)
+
+== Sanity 2: Uniform mean feature distortion within 2% of sqrt(d) * c(eps, delta) * sqrt(2/pi)
+  [PASS] Uniform distortion matches theory for all datasets x eps (worst relative error 1.24e-03)
+
+== Sanity 3: the test set is never noised; scores, ranges and models never touch test data
+  [PASS] test-feature SHA-256 unchanged after every trial (checked in each worker and here); the mechanism is only ever applied to X_train
+  [PASS] dependence scores use the private-train split (and the public split for MIC-Public); public ranges and grid cut points come from config.yaml (documented) or the public split
+
+== Sanity 4: privatized scores vary across trials (per-feature std of the noisy FG-MIC over trials, Adult, MIC-DP)
+  eps=0.1   std(s_hat_j) = 0.826 0.845 0.795 0.710 0.837 0.880 0.665 0.921 0.863 0.815 0.904 0.749 | mean shrinkage factor B = 0.01 | mean released columns = 12.0
+  eps=0.3   std(s_hat_j) = 0.257 0.288 0.338 0.268 0.272 0.281 0.283 0.334 0.318 0.351 0.321 0.320 | mean shrinkage factor B = 0.07 | mean released columns = 12.0
+  eps=0.5   std(s_hat_j) = 0.164 0.198 0.192 0.152 0.192 0.185 0.203 0.211 0.166 0.198 0.211 0.143 | mean shrinkage factor B = 0.14 | mean released columns = 12.0
+  eps=1     std(s_hat_j) = 0.108 0.082 0.107 0.099 0.074 0.114 0.082 0.092 0.096 0.088 0.085 0.090 | mean shrinkage factor B = 0.29 | mean released columns = 11.2
+  eps=5     std(s_hat_j) = 0.027 0.021 0.021 0.021 0.021 0.021 0.017 0.017 0.021 0.023 0.024 0.021 | mean shrinkage factor B = 0.87 | mean released columns = 8.7
+  eps=10    std(s_hat_j) = 0.013 0.012 0.012 0.011 0.011 0.010 0.012 0.010 0.011 0.010 0.009 0.010 | mean shrinkage factor B = 0.96 | mean released columns = 8.1
+  [PASS] privatized scores vary across trials for every feature and eps
+
+== Sanity 7: privacy invariant on every stored DP release: sum over released columns of 1/sigma_j^2 = 1/c(eps_m, delta_m)^2
+  [PASS] invariant holds on 26400 stored releases (max relative error 1.1e-15)
+
+== Sanity 5: MIC-Oracle is not DP and is excluded from DP comparisons
+  [PASS] mic_oracle is flagged dp: false; report.py asserts it appears only in tab_ablation.tex
+
+All sanity checks passed. Total wall time 107.8 min.

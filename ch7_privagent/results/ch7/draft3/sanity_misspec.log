@@ -1,0 +1,6 @@
+PASS baseline: estimated weights equal users.parquet (uniform, main) for 120000 of 120000 user-method rows (max abs difference 1.8e-15)
+PASS baseline: repair flags equal users.parquet
+PASS baseline: decisions (adult, linear) equal decisions.parquet for 120000 of 120000 rows
+PASS baseline: decisions (cdc, linear) equal decisions.parquet for 120000 of 120000 rows
+INFO share of privacy-always users: privacy_0.1: 0.100, privacy_0.25: 0.250
+INFO repair rate (Vote-6 dialogue): baseline: 0.0036, lapse_0.1: 0.0067, lapse_0.2: 0.0104, lapse_0.33: 0.0149, lexicographic: 0.0000, privacy_0.1: 0.0033, privacy_0.25: 0.0027, side_alt_0.5: 0.0044, side_alt_1.0: 0.0053, side_fixed_0.5: 0.0044, side_fixed_1.0: 0.0054

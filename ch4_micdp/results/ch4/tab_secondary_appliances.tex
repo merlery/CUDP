@@ -1,0 +1,10 @@
+% Appliances | secondary (linear) model | MAE (lower is better), mean $\pm$ std over 30 trials
+% columns: eps & Uniform & MIC-DP & MIC-Public & Pearson-Alloc & Pearson-Adj & PartialCorr-Adj
+% caption note: Non-private MAE = 54.2722 $\pm$ 0.0000
+% bold = best DP method in the row; $^\dagger$ = MIC-DP significantly better than all four baselines (Uniform, Pearson-Alloc, Pearson-Adj, PartialCorr-Adj), paired Wilcoxon, Holm-adjusted p < 0.05
+0.1 & 61.4220 $\pm$ 0.0197 & 61.4087 $\pm$ 0.0183 & 61.4129 $\pm$ 0.0194 & 61.4089 $\pm$ 0.0261 & 61.4109 $\pm$ 0.0183 & \textbf{61.4081} $\pm$ 0.0176 \\
+0.3 & 61.4109 $\pm$ 0.0210 & 61.4074 $\pm$ 0.0170 & 61.4105 $\pm$ 0.0154 & 61.4076 $\pm$ 0.0201 & 61.4122 $\pm$ 0.0209 & \textbf{61.4057} $\pm$ 0.0274 \\
+0.5 & 61.4120 $\pm$ 0.0209 & 61.4134 $\pm$ 0.0202 & 61.4092 $\pm$ 0.0176 & 61.4105 $\pm$ 0.0166 & \textbf{61.4064} $\pm$ 0.0227 & 61.4094 $\pm$ 0.0225 \\
+1 & 61.4061 $\pm$ 0.0227 & 61.4133 $\pm$ 0.0210 & 61.4074 $\pm$ 0.0180 & 61.4102 $\pm$ 0.0185 & \textbf{61.4049} $\pm$ 0.0200 & 61.4173 $\pm$ 0.0196 \\
+5 & 61.3891 $\pm$ 0.0230 & 61.3882 $\pm$ 0.0323 & \textbf{61.3754} $\pm$ 0.0282 & 61.3952 $\pm$ 0.0294 & 61.3946 $\pm$ 0.0242 & 61.4036 $\pm$ 0.0250 \\
+10 & 61.3219 $\pm$ 0.0316 & 61.3385 $\pm$ 0.0416 & \textbf{61.2954} $\pm$ 0.0364 & 61.3560 $\pm$ 0.0316 & 61.3588 $\pm$ 0.0396 & 61.3525 $\pm$ 0.0276 \\

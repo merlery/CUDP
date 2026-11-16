@@ -1,0 +1,9 @@
+% CDC-Diabetes, secondary model (logistic regression), ROC-AUC on the clean test set, mean $\pm$ std over 30 trials
+% columns: eps & Public-Only (15%) & Public-Only (5%) & Public-Only (1%) & Uniform & MIC-DP & MIC-Public (15%) & MIC-Public (5%) & MIC-Public (1%) & Public-Pretrain + Uniform-FT (15%) & Public-Pretrain + MIC-DP-FT (15%) & Public + Uniform (pooled) (15%)
+% caption note: Non-private (private-training split, no noise) ROC-AUC = 0.827 $\pm$ 0.000; Public-Only does not depend on eps and touches no private record
+0.1 & 0.825 $\pm$ 0.000 & 0.819 $\pm$ 0.000 & 0.802 $\pm$ 0.000 & 0.502 $\pm$ 0.120 & 0.510 $\pm$ 0.131 & 0.550 $\pm$ 0.186 & 0.603 $\pm$ 0.173 & 0.609 $\pm$ 0.161 & 0.502 $\pm$ 0.120 & 0.510 $\pm$ 0.131 & 0.511 $\pm$ 0.120 \\
+0.3 & 0.825 $\pm$ 0.000 & 0.819 $\pm$ 0.000 & 0.802 $\pm$ 0.000 & 0.587 $\pm$ 0.105 & 0.604 $\pm$ 0.100 & 0.711 $\pm$ 0.106 & 0.698 $\pm$ 0.087 & 0.661 $\pm$ 0.154 & 0.587 $\pm$ 0.105 & 0.604 $\pm$ 0.100 & 0.610 $\pm$ 0.101 \\
+0.5 & 0.825 $\pm$ 0.000 & 0.819 $\pm$ 0.000 & 0.802 $\pm$ 0.000 & 0.652 $\pm$ 0.091 & 0.600 $\pm$ 0.119 & 0.735 $\pm$ 0.092 & 0.731 $\pm$ 0.111 & 0.752 $\pm$ 0.085 & 0.652 $\pm$ 0.091 & 0.600 $\pm$ 0.119 & 0.676 $\pm$ 0.081 \\
+1 & 0.825 $\pm$ 0.000 & 0.819 $\pm$ 0.000 & 0.802 $\pm$ 0.000 & 0.727 $\pm$ 0.035 & 0.701 $\pm$ 0.046 & 0.794 $\pm$ 0.008 & 0.789 $\pm$ 0.013 & 0.787 $\pm$ 0.016 & 0.727 $\pm$ 0.035 & 0.701 $\pm$ 0.046 & 0.749 $\pm$ 0.024 \\
+5 & 0.825 $\pm$ 0.000 & 0.819 $\pm$ 0.000 & 0.802 $\pm$ 0.000 & 0.792 $\pm$ 0.005 & 0.790 $\pm$ 0.007 & 0.800 $\pm$ 0.002 & 0.799 $\pm$ 0.002 & 0.800 $\pm$ 0.001 & 0.792 $\pm$ 0.005 & 0.790 $\pm$ 0.007 & 0.794 $\pm$ 0.004 \\
+10 & 0.825 $\pm$ 0.000 & 0.819 $\pm$ 0.000 & 0.802 $\pm$ 0.000 & 0.798 $\pm$ 0.003 & 0.798 $\pm$ 0.004 & 0.801 $\pm$ 0.001 & 0.799 $\pm$ 0.001 & 0.800 $\pm$ 0.001 & 0.798 $\pm$ 0.003 & 0.798 $\pm$ 0.004 & 0.798 $\pm$ 0.002 \\

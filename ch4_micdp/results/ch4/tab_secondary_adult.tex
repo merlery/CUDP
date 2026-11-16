@@ -1,0 +1,10 @@
+% Adult | secondary (linear) model | ROC-AUC (higher is better), mean $\pm$ std over 30 trials
+% columns: eps & Uniform & MIC-DP & MIC-Public & Pearson-Alloc & Pearson-Adj & PartialCorr-Adj
+% caption note: Non-private ROC-AUC = 0.8823 $\pm$ 0.0000
+% bold = best DP method in the row; $^\dagger$ = MIC-DP significantly better than all four baselines (Uniform, Pearson-Alloc, Pearson-Adj, PartialCorr-Adj), paired Wilcoxon, Holm-adjusted p < 0.05
+0.1 & 0.5269 $\pm$ 0.1315 & 0.5479 $\pm$ 0.1522 & \textbf{0.5529} $\pm$ 0.1774 & 0.5162 $\pm$ 0.1261 & 0.5101 $\pm$ 0.1348 & 0.5268 $\pm$ 0.1452 \\
+0.3 & 0.6036 $\pm$ 0.1020 & 0.5891 $\pm$ 0.1234 & \textbf{0.6730} $\pm$ 0.1369 & 0.5696 $\pm$ 0.1470 & 0.5494 $\pm$ 0.1134 & 0.5421 $\pm$ 0.1136 \\
+0.5 & \textbf{0.6765} $\pm$ 0.0887 & 0.6079 $\pm$ 0.1408 & 0.6745 $\pm$ 0.1264 & 0.6489 $\pm$ 0.1331 & 0.5942 $\pm$ 0.1049 & 0.6052 $\pm$ 0.1242 \\
+1 & 0.7069 $\pm$ 0.0882 & 0.7143 $\pm$ 0.0930 & \textbf{0.7807} $\pm$ 0.0503 & 0.7554 $\pm$ 0.0809 & 0.6698 $\pm$ 0.0878 & 0.7070 $\pm$ 0.0770 \\
+5 & 0.7994 $\pm$ 0.0090 & 0.8194 $\pm$ 0.0146 & 0.8195 $\pm$ 0.0075 & \textbf{0.8210} $\pm$ 0.0084 & 0.7833 $\pm$ 0.0137 & 0.7800 $\pm$ 0.0105 \\
+10 & 0.8025 $\pm$ 0.0046 & 0.8220 $\pm$ 0.0071 & \textbf{0.8251} $\pm$ 0.0051 & 0.8247 $\pm$ 0.0042 & 0.7907 $\pm$ 0.0107 & 0.7900 $\pm$ 0.0060 \\

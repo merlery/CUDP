@@ -1,0 +1,10 @@
+% Synthetic-nl-high | primary (HistGradientBoosting) model | MAE (lower is better), mean $\pm$ std over 30 trials
+% columns: eps & Uniform & MIC-DP & MIC-Public & Pearson-Alloc & Pearson-Adj & PartialCorr-Adj
+% caption note: Non-private MAE = 0.8523 $\pm$ 0.0000
+% bold = best DP method in the row; $^\dagger$ = MIC-DP significantly better than all four baselines (Uniform, Pearson-Alloc, Pearson-Adj, PartialCorr-Adj), paired Wilcoxon, Holm-adjusted p < 0.05 [no daggers: this dataset is not in the F1 family]
+0.1 & 1.7691 $\pm$ 0.0002 & 1.7691 $\pm$ 0.0003 & \textbf{1.7690} $\pm$ 0.0002 & 1.7691 $\pm$ 0.0003 & 1.7691 $\pm$ 0.0003 & 1.7691 $\pm$ 0.0002 \\
+0.3 & 1.7691 $\pm$ 0.0003 & 1.7692 $\pm$ 0.0003 & \textbf{1.7690} $\pm$ 0.0002 & 1.7691 $\pm$ 0.0003 & 1.7692 $\pm$ 0.0003 & 1.7692 $\pm$ 0.0002 \\
+0.5 & 1.7692 $\pm$ 0.0002 & 1.7691 $\pm$ 0.0003 & \textbf{1.7690} $\pm$ 0.0003 & 1.7692 $\pm$ 0.0002 & 1.7691 $\pm$ 0.0003 & 1.7691 $\pm$ 0.0003 \\
+1 & 1.7691 $\pm$ 0.0003 & 1.7691 $\pm$ 0.0003 & \textbf{1.7688} $\pm$ 0.0003 & 1.7692 $\pm$ 0.0002 & 1.7691 $\pm$ 0.0003 & 1.7691 $\pm$ 0.0003 \\
+5 & 1.7682 $\pm$ 0.0004 & 1.7681 $\pm$ 0.0006 & \textbf{1.7660} $\pm$ 0.0006 & 1.7686 $\pm$ 0.0004 & 1.7686 $\pm$ 0.0005 & 1.7686 $\pm$ 0.0004 \\
+10 & 1.7666 $\pm$ 0.0005 & 1.7648 $\pm$ 0.0016 & \textbf{1.7603} $\pm$ 0.0014 & 1.7666 $\pm$ 0.0010 & 1.7672 $\pm$ 0.0005 & 1.7674 $\pm$ 0.0005 \\

@@ -1,0 +1,772 @@
+{
+ "adult": {
+  "rule1": {
+   "smallest": "1%",
+   "sizes_where_it_holds": [
+    "1%",
+    "5%",
+    "15%"
+   ]
+  },
+  "rule2": {
+   "15%": {
+    "largest": "none",
+    "all_eps": []
+   },
+   "5%": {
+    "largest": "none",
+    "all_eps": []
+   },
+   "1%": {
+    "largest": "none",
+    "all_eps": []
+   }
+  },
+  "rule3": [
+   {
+    "eps": 0.1,
+    "size": "15%",
+    "method": "Public-Pretrain + Uniform-FT",
+    "vs_public_only": "B better",
+    "vs_private": "n.s.",
+    "better_than_both": "no"
+   },
+   {
+    "eps": 0.1,
+    "size": "15%",
+    "method": "Public-Pretrain + MIC-DP-FT",
+    "vs_public_only": "B better",
+    "vs_private": "n.s.",
+    "better_than_both": "no"
+   },
+   {
+    "eps": 0.1,
+    "size": "15%",
+    "method": "Public + Uniform",
+    "vs_public_only": "B better",
+    "vs_private": "n.s.",
+    "better_than_both": "no"
+   },
+   {
+    "eps": 0.1,
+    "size": "5%",
+    "method": "Public-Pretrain + Uniform-FT",
+    "vs_public_only": "B better",
+    "vs_private": "n.s.",
+    "better_than_both": "no"
+   },
+   {
+    "eps": 0.1,
+    "size": "5%",
+    "method": "Public-Pretrain + MIC-DP-FT",
+    "vs_public_only": "B better",
+    "vs_private": "n.s.",
+    "better_than_both": "no"
+   },
+   {
+    "eps": 0.1,
+    "size": "5%",
+    "method": "Public + Uniform",
+    "vs_public_only": "B better",
+    "vs_private": "n.s.",
+    "better_than_both": "no"
+   },
+   {
+    "eps": 0.3,
+    "size": "15%",
+    "method": "Public-Pretrain + Uniform-FT",
+    "vs_public_only": "B better",
+    "vs_private": "B better",
+    "better_than_both": "no"
+   },
+   {
+    "eps": 0.3,
+    "size": "15%",
+    "method": "Public-Pretrain + MIC-DP-FT",
+    "vs_public_only": "B better",
+    "vs_private": "n.s.",
+    "better_than_both": "no"
+   },
+   {
+    "eps": 0.3,
+    "size": "15%",
+    "method": "Public + Uniform",
+    "vs_public_only": "B better",
+    "vs_private": "n.s.",
+    "better_than_both": "no"
+   },
+   {
+    "eps": 0.3,
+    "size": "5%",
+    "method": "Public-Pretrain + Uniform-FT",
+    "vs_public_only": "B better",
+    "vs_private": "B better",
+    "better_than_both": "no"
+   },
+   {
+    "eps": 0.3,
+    "size": "5%",
+    "method": "Public-Pretrain + MIC-DP-FT",
+    "vs_public_only": "B better",
+    "vs_private": "n.s.",
+    "better_than_both": "no"
+   },
+   {
+    "eps": 0.3,
+    "size": "5%",
+    "method": "Public + Uniform",
+    "vs_public_only": "B better",
+    "vs_private": "n.s.",
+    "better_than_both": "no"
+   },
+   {
+    "eps": 0.5,
+    "size": "15%",
+    "method": "Public-Pretrain + Uniform-FT",
+    "vs_public_only": "B better",
+    "vs_private": "B better",
+    "better_than_both": "no"
+   },
+   {
+    "eps": 0.5,
+    "size": "15%",
+    "method": "Public-Pretrain + MIC-DP-FT",
+    "vs_public_only": "B better",
+    "vs_private": "B better",
+    "better_than_both": "no"
+   },
+   {
+    "eps": 0.5,
+    "size": "15%",
+    "method": "Public + Uniform",
+    "vs_public_only": "B better",
+    "vs_private": "n.s.",
+    "better_than_both": "no"
+   },
+   {
+    "eps": 0.5,
+    "size": "5%",
+    "method": "Public-Pretrain + Uniform-FT",
+    "vs_public_only": "B better",
+    "vs_private": "B better",
+    "better_than_both": "no"
+   },
+   {
+    "eps": 0.5,
+    "size": "5%",
+    "method": "Public-Pretrain + MIC-DP-FT",
+    "vs_public_only": "B better",
+    "vs_private": "B better",
+    "better_than_both": "no"
+   },
+   {
+    "eps": 0.5,
+    "size": "5%",
+    "method": "Public + Uniform",
+    "vs_public_only": "B better",
+    "vs_private": "n.s.",
+    "better_than_both": "no"
+   },
+   {
+    "eps": 1.0,
+    "size": "15%",
+    "method": "Public-Pretrain + Uniform-FT",
+    "vs_public_only": "B better",
+    "vs_private": "B better",
+    "better_than_both": "no"
+   },
+   {
+    "eps": 1.0,
+    "size": "15%",
+    "method": "Public-Pretrain + MIC-DP-FT",
+    "vs_public_only": "B better",
+    "vs_private": "B better",
+    "better_than_both": "no"
+   },
+   {
+    "eps": 1.0,
+    "size": "15%",
+    "method": "Public + Uniform",
+    "vs_public_only": "B better",
+    "vs_private": "n.s.",
+    "better_than_both": "no"
+   },
+   {
+    "eps": 1.0,
+    "size": "5%",
+    "method": "Public-Pretrain + Uniform-FT",
+    "vs_public_only": "B better",
+    "vs_private": "B better",
+    "better_than_both": "no"
+   },
+   {
+    "eps": 1.0,
+    "size": "5%",
+    "method": "Public-Pretrain + MIC-DP-FT",
+    "vs_public_only": "B better",
+    "vs_private": "B better",
+    "better_than_both": "no"
+   },
+   {
+    "eps": 1.0,
+    "size": "5%",
+    "method": "Public + Uniform",
+    "vs_public_only": "B better",
+    "vs_private": "n.s.",
+    "better_than_both": "no"
+   },
+   {
+    "eps": 5.0,
+    "size": "15%",
+    "method": "Public-Pretrain + Uniform-FT",
+    "vs_public_only": "B better",
+    "vs_private": "B better",
+    "better_than_both": "no"
+   },
+   {
+    "eps": 5.0,
+    "size": "15%",
+    "method": "Public-Pretrain + MIC-DP-FT",
+    "vs_public_only": "B better",
+    "vs_private": "B better",
+    "better_than_both": "no"
+   },
+   {
+    "eps": 5.0,
+    "size": "15%",
+    "method": "Public + Uniform",
+    "vs_public_only": "B better",
+    "vs_private": "A better",
+    "better_than_both": "no"
+   },
+   {
+    "eps": 5.0,
+    "size": "5%",
+    "method": "Public-Pretrain + Uniform-FT",
+    "vs_public_only": "B better",
+    "vs_private": "B better",
+    "better_than_both": "no"
+   },
+   {
+    "eps": 5.0,
+    "size": "5%",
+    "method": "Public-Pretrain + MIC-DP-FT",
+    "vs_public_only": "B better",
+    "vs_private": "B better",
+    "better_than_both": "no"
+   },
+   {
+    "eps": 5.0,
+    "size": "5%",
+    "method": "Public + Uniform",
+    "vs_public_only": "B better",
+    "vs_private": "n.s.",
+    "better_than_both": "no"
+   },
+   {
+    "eps": 10.0,
+    "size": "15%",
+    "method": "Public-Pretrain + Uniform-FT",
+    "vs_public_only": "B better",
+    "vs_private": "B better",
+    "better_than_both": "no"
+   },
+   {
+    "eps": 10.0,
+    "size": "15%",
+    "method": "Public-Pretrain + MIC-DP-FT",
+    "vs_public_only": "B better",
+    "vs_private": "B better",
+    "better_than_both": "no"
+   },
+   {
+    "eps": 10.0,
+    "size": "15%",
+    "method": "Public + Uniform",
+    "vs_public_only": "B better",
+    "vs_private": "A better",
+    "better_than_both": "no"
+   },
+   {
+    "eps": 10.0,
+    "size": "5%",
+    "method": "Public-Pretrain + Uniform-FT",
+    "vs_public_only": "B better",
+    "vs_private": "B better",
+    "better_than_both": "no"
+   },
+   {
+    "eps": 10.0,
+    "size": "5%",
+    "method": "Public-Pretrain + MIC-DP-FT",
+    "vs_public_only": "B better",
+    "vs_private": "B better",
+    "better_than_both": "no"
+   },
+   {
+    "eps": 10.0,
+    "size": "5%",
+    "method": "Public + Uniform",
+    "vs_public_only": "B better",
+    "vs_private": "n.s.",
+    "better_than_both": "no"
+   }
+  ],
+  "rule4": [
+   {
+    "eps": 0.1,
+    "mic_dp": 0.5467755436317706,
+    "mic_public_15%": 0.5465810770369598,
+    "mic_public_5%": 0.4923903063780354,
+    "mic_public_1%": 0.5646643790681514,
+    "outcome_15%": "n.s.",
+    "outcome_5%": "n.s.",
+    "outcome_1%": "n.s.",
+    "stops_helping_at": "15%"
+   },
+   {
+    "eps": 0.3,
+    "mic_dp": 0.572230903937938,
+    "mic_public_15%": 0.6719105783664999,
+    "mic_public_5%": 0.6123262922988059,
+    "mic_public_1%": 0.6740802820604057,
+    "outcome_15%": "n.s.",
+    "outcome_5%": "n.s.",
+    "outcome_1%": "n.s.",
+    "stops_helping_at": "15%"
+   },
+   {
+    "eps": 0.5,
+    "mic_dp": 0.6117246541962312,
+    "mic_public_15%": 0.6798609310014839,
+    "mic_public_5%": 0.6601593379747609,
+    "mic_public_1%": 0.6937070319825198,
+    "outcome_15%": "n.s.",
+    "outcome_5%": "n.s.",
+    "outcome_1%": "n.s.",
+    "stops_helping_at": "15%"
+   },
+   {
+    "eps": 1.0,
+    "mic_dp": 0.7048185296937893,
+    "mic_public_15%": 0.7795856908748203,
+    "mic_public_5%": 0.7518834756808546,
+    "mic_public_1%": 0.7721208025151614,
+    "outcome_15%": "A better",
+    "outcome_5%": "n.s.",
+    "outcome_1%": "A better",
+    "stops_helping_at": "5%"
+   },
+   {
+    "eps": 5.0,
+    "mic_dp": 0.8195522780687734,
+    "mic_public_15%": 0.820186076891721,
+    "mic_public_5%": 0.8242225739420288,
+    "mic_public_1%": 0.8167418301793475,
+    "outcome_15%": "n.s.",
+    "outcome_5%": "n.s.",
+    "outcome_1%": "n.s.",
+    "stops_helping_at": "15%"
+   },
+   {
+    "eps": 10.0,
+    "mic_dp": 0.822689840535397,
+    "mic_public_15%": 0.827463482401366,
+    "mic_public_5%": 0.8252671119302815,
+    "mic_public_1%": 0.8194528047927828,
+    "outcome_15%": "n.s.",
+    "outcome_5%": "n.s.",
+    "outcome_1%": "n.s.",
+    "stops_helping_at": "15%"
+   }
+  ]
+ },
+ "cdc_diabetes": {
+  "rule1": {
+   "smallest": "15%",
+   "sizes_where_it_holds": [
+    "15%"
+   ]
+  },
+  "rule2": {
+   "15%": {
+    "largest": "none",
+    "all_eps": []
+   },
+   "5%": {
+    "largest": "10",
+    "all_eps": [
+     "1",
+     "5",
+     "10"
+    ]
+   },
+   "1%": {
+    "largest": "10",
+    "all_eps": [
+     "1",
+     "5",
+     "10"
+    ]
+   }
+  },
+  "rule3": [
+   {
+    "eps": 0.1,
+    "size": "15%",
+    "method": "Public-Pretrain + Uniform-FT",
+    "vs_public_only": "B better",
+    "vs_private": "A better",
+    "better_than_both": "no"
+   },
+   {
+    "eps": 0.1,
+    "size": "15%",
+    "method": "Public-Pretrain + MIC-DP-FT",
+    "vs_public_only": "B better",
+    "vs_private": "A better",
+    "better_than_both": "no"
+   },
+   {
+    "eps": 0.1,
+    "size": "15%",
+    "method": "Public + Uniform",
+    "vs_public_only": "B better",
+    "vs_private": "A better",
+    "better_than_both": "no"
+   },
+   {
+    "eps": 0.1,
+    "size": "5%",
+    "method": "Public-Pretrain + Uniform-FT",
+    "vs_public_only": "B better",
+    "vs_private": "A better",
+    "better_than_both": "no"
+   },
+   {
+    "eps": 0.1,
+    "size": "5%",
+    "method": "Public-Pretrain + MIC-DP-FT",
+    "vs_public_only": "B better",
+    "vs_private": "A better",
+    "better_than_both": "no"
+   },
+   {
+    "eps": 0.1,
+    "size": "5%",
+    "method": "Public + Uniform",
+    "vs_public_only": "B better",
+    "vs_private": "n.s.",
+    "better_than_both": "no"
+   },
+   {
+    "eps": 0.3,
+    "size": "15%",
+    "method": "Public-Pretrain + Uniform-FT",
+    "vs_public_only": "B better",
+    "vs_private": "A better",
+    "better_than_both": "no"
+   },
+   {
+    "eps": 0.3,
+    "size": "15%",
+    "method": "Public-Pretrain + MIC-DP-FT",
+    "vs_public_only": "B better",
+    "vs_private": "A better",
+    "better_than_both": "no"
+   },
+   {
+    "eps": 0.3,
+    "size": "15%",
+    "method": "Public + Uniform",
+    "vs_public_only": "B better",
+    "vs_private": "n.s.",
+    "better_than_both": "no"
+   },
+   {
+    "eps": 0.3,
+    "size": "5%",
+    "method": "Public-Pretrain + Uniform-FT",
+    "vs_public_only": "B better",
+    "vs_private": "A better",
+    "better_than_both": "no"
+   },
+   {
+    "eps": 0.3,
+    "size": "5%",
+    "method": "Public-Pretrain + MIC-DP-FT",
+    "vs_public_only": "B better",
+    "vs_private": "A better",
+    "better_than_both": "no"
+   },
+   {
+    "eps": 0.3,
+    "size": "5%",
+    "method": "Public + Uniform",
+    "vs_public_only": "B better",
+    "vs_private": "n.s.",
+    "better_than_both": "no"
+   },
+   {
+    "eps": 0.5,
+    "size": "15%",
+    "method": "Public-Pretrain + Uniform-FT",
+    "vs_public_only": "B better",
+    "vs_private": "A better",
+    "better_than_both": "no"
+   },
+   {
+    "eps": 0.5,
+    "size": "15%",
+    "method": "Public-Pretrain + MIC-DP-FT",
+    "vs_public_only": "B better",
+    "vs_private": "A better",
+    "better_than_both": "no"
+   },
+   {
+    "eps": 0.5,
+    "size": "15%",
+    "method": "Public + Uniform",
+    "vs_public_only": "B better",
+    "vs_private": "A better",
+    "better_than_both": "no"
+   },
+   {
+    "eps": 0.5,
+    "size": "5%",
+    "method": "Public-Pretrain + Uniform-FT",
+    "vs_public_only": "B better",
+    "vs_private": "A better",
+    "better_than_both": "no"
+   },
+   {
+    "eps": 0.5,
+    "size": "5%",
+    "method": "Public-Pretrain + MIC-DP-FT",
+    "vs_public_only": "B better",
+    "vs_private": "A better",
+    "better_than_both": "no"
+   },
+   {
+    "eps": 0.5,
+    "size": "5%",
+    "method": "Public + Uniform",
+    "vs_public_only": "B better",
+    "vs_private": "n.s.",
+    "better_than_both": "no"
+   },
+   {
+    "eps": 1.0,
+    "size": "15%",
+    "method": "Public-Pretrain + Uniform-FT",
+    "vs_public_only": "B better",
+    "vs_private": "A better",
+    "better_than_both": "no"
+   },
+   {
+    "eps": 1.0,
+    "size": "15%",
+    "method": "Public-Pretrain + MIC-DP-FT",
+    "vs_public_only": "B better",
+    "vs_private": "A better",
+    "better_than_both": "no"
+   },
+   {
+    "eps": 1.0,
+    "size": "15%",
+    "method": "Public + Uniform",
+    "vs_public_only": "B better",
+    "vs_private": "A better",
+    "better_than_both": "no"
+   },
+   {
+    "eps": 1.0,
+    "size": "5%",
+    "method": "Public-Pretrain + Uniform-FT",
+    "vs_public_only": "B better",
+    "vs_private": "A better",
+    "better_than_both": "no"
+   },
+   {
+    "eps": 1.0,
+    "size": "5%",
+    "method": "Public-Pretrain + MIC-DP-FT",
+    "vs_public_only": "B better",
+    "vs_private": "n.s.",
+    "better_than_both": "no"
+   },
+   {
+    "eps": 1.0,
+    "size": "5%",
+    "method": "Public + Uniform",
+    "vs_public_only": "B better",
+    "vs_private": "n.s.",
+    "better_than_both": "no"
+   },
+   {
+    "eps": 5.0,
+    "size": "15%",
+    "method": "Public-Pretrain + Uniform-FT",
+    "vs_public_only": "B better",
+    "vs_private": "A better",
+    "better_than_both": "no"
+   },
+   {
+    "eps": 5.0,
+    "size": "15%",
+    "method": "Public-Pretrain + MIC-DP-FT",
+    "vs_public_only": "B better",
+    "vs_private": "A better",
+    "better_than_both": "no"
+   },
+   {
+    "eps": 5.0,
+    "size": "15%",
+    "method": "Public + Uniform",
+    "vs_public_only": "B better",
+    "vs_private": "A better",
+    "better_than_both": "no"
+   },
+   {
+    "eps": 5.0,
+    "size": "5%",
+    "method": "Public-Pretrain + Uniform-FT",
+    "vs_public_only": "B better",
+    "vs_private": "B better",
+    "better_than_both": "no"
+   },
+   {
+    "eps": 5.0,
+    "size": "5%",
+    "method": "Public-Pretrain + MIC-DP-FT",
+    "vs_public_only": "B better",
+    "vs_private": "B better",
+    "better_than_both": "no"
+   },
+   {
+    "eps": 5.0,
+    "size": "5%",
+    "method": "Public + Uniform",
+    "vs_public_only": "A better",
+    "vs_private": "n.s.",
+    "better_than_both": "no"
+   },
+   {
+    "eps": 10.0,
+    "size": "15%",
+    "method": "Public-Pretrain + Uniform-FT",
+    "vs_public_only": "B better",
+    "vs_private": "A better",
+    "better_than_both": "no"
+   },
+   {
+    "eps": 10.0,
+    "size": "15%",
+    "method": "Public-Pretrain + MIC-DP-FT",
+    "vs_public_only": "B better",
+    "vs_private": "n.s.",
+    "better_than_both": "no"
+   },
+   {
+    "eps": 10.0,
+    "size": "15%",
+    "method": "Public + Uniform",
+    "vs_public_only": "B better",
+    "vs_private": "A better",
+    "better_than_both": "no"
+   },
+   {
+    "eps": 10.0,
+    "size": "5%",
+    "method": "Public-Pretrain + Uniform-FT",
+    "vs_public_only": "B better",
+    "vs_private": "B better",
+    "better_than_both": "no"
+   },
+   {
+    "eps": 10.0,
+    "size": "5%",
+    "method": "Public-Pretrain + MIC-DP-FT",
+    "vs_public_only": "B better",
+    "vs_private": "B better",
+    "better_than_both": "no"
+   },
+   {
+    "eps": 10.0,
+    "size": "5%",
+    "method": "Public + Uniform",
+    "vs_public_only": "A better",
+    "vs_private": "A better",
+    "better_than_both": "yes"
+   }
+  ],
+  "rule4": [
+   {
+    "eps": 0.1,
+    "mic_dp": 0.4976366519012079,
+    "mic_public_15%": 0.5460311750676091,
+    "mic_public_5%": 0.5891468294940644,
+    "mic_public_1%": 0.6099091765891473,
+    "outcome_15%": "n.s.",
+    "outcome_5%": "n.s.",
+    "outcome_1%": "n.s.",
+    "stops_helping_at": "15%"
+   },
+   {
+    "eps": 0.3,
+    "mic_dp": 0.6068592630065875,
+    "mic_public_15%": 0.6979422232266989,
+    "mic_public_5%": 0.7066945480544845,
+    "mic_public_1%": 0.6646234616427145,
+    "outcome_15%": "A better",
+    "outcome_5%": "A better",
+    "outcome_1%": "n.s.",
+    "stops_helping_at": "1%"
+   },
+   {
+    "eps": 0.5,
+    "mic_dp": 0.5830187935121772,
+    "mic_public_15%": 0.7157355638133963,
+    "mic_public_5%": 0.7319441366734882,
+    "mic_public_1%": 0.7510203640100391,
+    "outcome_15%": "A better",
+    "outcome_5%": "A better",
+    "outcome_1%": "A better",
+    "stops_helping_at": "none"
+   },
+   {
+    "eps": 1.0,
+    "mic_dp": 0.6904327970174862,
+    "mic_public_15%": 0.7924698366239846,
+    "mic_public_5%": 0.7865630841701592,
+    "mic_public_1%": 0.7891232166805775,
+    "outcome_15%": "A better",
+    "outcome_5%": "A better",
+    "outcome_1%": "A better",
+    "stops_helping_at": "none"
+   },
+   {
+    "eps": 5.0,
+    "mic_dp": 0.789569496339772,
+    "mic_public_15%": 0.7993131190852704,
+    "mic_public_5%": 0.7982927986163146,
+    "mic_public_1%": 0.7996314740729392,
+    "outcome_15%": "A better",
+    "outcome_5%": "A better",
+    "outcome_1%": "A better",
+    "stops_helping_at": "none"
+   },
+   {
+    "eps": 10.0,
+    "mic_dp": 0.7983028633797095,
+    "mic_public_15%": 0.8002596867638957,
+    "mic_public_5%": 0.798819336103746,
+    "mic_public_1%": 0.8002693025703385,
+    "outcome_15%": "n.s.",
+    "outcome_5%": "n.s.",
+    "outcome_1%": "n.s.",
+    "stops_helping_at": "15%"
+   }
+  ]
+ }
+}

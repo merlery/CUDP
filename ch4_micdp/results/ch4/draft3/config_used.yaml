@@ -1,0 +1,1103 @@
+seeds:
+  subsample: 20260901
+  split: 20260902
+  score_subsample: 20260903
+  synthetic: 20260904
+  bootstrap: 20260905
+  trial_base: 1000
+privacy:
+  eps_grid:
+  - 0.1
+  - 0.3
+  - 0.5
+  - 1.0
+  - 5.0
+  - 10.0
+  delta: 1.0e-05
+  bisection:
+    lo: 1.0e-06
+    hi: 1000000.0
+    iters: 200
+protocol:
+  n_trials: 30
+  n_jobs: 2
+  sensitivity:
+    datasets:
+    - adult
+    - cdc_diabetes
+    - calhousing
+    - appliances
+    - syn_nl_mid
+    eps:
+    - 0.3
+    - 1.0
+    alpha_grid:
+    - 0
+    - 1
+    - 2
+    - 5
+    - 10
+    rho_grid:
+    - 0.05
+    - 0.1
+    - 0.2
+    - 0.3
+    - 0.5
+    alpha_method_id_base: 100
+    rho_method_id_base: 200
+methods:
+  defaults:
+    rho: 0.2
+    alpha: 2.0
+    theta: 0.2
+    tau0: 0.1
+    prune_min_B: 0.5
+  list:
+    nonprivate:
+      id: 0
+      display: Non-private
+      dp: false
+      rho: 0.0
+      weights: none
+    uniform:
+      id: 1
+      display: Uniform
+      dp: true
+      rho: 0.0
+      weights: uniform
+    mic_dp:
+      id: 2
+      display: MIC-DP
+      dp: true
+      rho: 0.2
+      weights: relevance
+      score: fgmic
+    mic_public:
+      id: 3
+      display: MIC-Public
+      dp: true
+      rho: 0.0
+      weights: relevance
+      score: fgmic_public
+    pearson_alloc:
+      id: 4
+      display: Pearson-Alloc
+      dp: true
+      rho: 0.2
+      weights: relevance
+      score: pearson
+    pearson_adj:
+      id: 5
+      display: Pearson-Adj
+      dp: true
+      rho: 0.2
+      weights: inv_sq
+      score: pearson
+    partialcorr_adj:
+      id: 6
+      display: PartialCorr-Adj
+      dp: true
+      rho: 0.2
+      weights: inv_sq
+      score: partialcorr
+    random_alloc:
+      id: 7
+      display: Random-Alloc
+      dp: true
+      rho: 0.2
+      weights: permute
+      score: fgmic
+    mic_oracle:
+      id: 8
+      display: MIC-Oracle
+      dp: false
+      rho: 0.0
+      weights: relevance
+      score: fgmic_oracle
+    mic_dp_override:
+      id: 9
+      display: MIC-DP+Override
+      dp: true
+      rho: 0.2
+      weights: relevance_override
+      score: fgmic
+      only:
+      - adult
+      protected:
+      - race
+      - sex
+      - age
+scores:
+  fgmic:
+    n_x_bins: 32
+    l_max: 16
+    alpha_B: 0.55
+  moments:
+    target_percentiles:
+    - 0.5
+    - 99.5
+  partialcorr_ridge: 1.0e-06
+models:
+  primary:
+    name: HistGradientBoosting
+    max_iter: 200
+    early_stopping: false
+    noise_aware: true
+  secondary:
+    classification:
+      name: LogisticRegression
+      C: 1.0
+      max_iter: 2000
+    regression:
+      name: Ridge
+      alpha: 1.0
+metrics:
+  classification:
+    primary: roc_auc
+    secondary: accuracy
+    higher_is_better: true
+  regression:
+    primary: mae
+    secondary: r2
+    higher_is_better: false
+stats:
+  alpha_level: 0.05
+  bootstrap_resamples: 10000
+  ci: 0.95
+hypotheses:
+  H1: pass if, for >=3 of the 4 real datasets, MIC-DP is significantly better than
+    Uniform (F1, Holm) at every eps in {0.1, 0.3, 1.0}; partial if 1-2 datasets qualify
+    or some (dataset, eps) cells are significant; fail otherwise
+  H1_eps:
+  - 0.1
+  - 0.3
+  - 1.0
+  H2: pass if MIC-DP is significantly better than Pearson-Alloc on syn_nl_mid at >=4
+    of 6 eps (F2, Holm) AND on syn_lin no eps shows a significant difference in either
+    direction; partial if exactly one of the two parts holds
+  H2_min_eps: 4
+  H3: pass if MIC-DP is significantly better than Random-Alloc in >=13 of the 24 (dataset,
+    eps) cells (F3, Holm) with no significant reverse effect; partial if 1-12 significant
+    wins; fail otherwise
+  H3_min_cells: 13
+  H4: per eps, OLS slope of UR(MIC-DP) (ratio of trial means) on log(lambda) over
+    the 3 points syn_nl_low/mid/high; 95% percentile bootstrap CI resampling trial
+    seeds jointly across variants. pass if CI lower bound > 0 at >=4 of 6 eps; partial
+    if at 1-3 eps; fail otherwise
+  H4_min_eps: 4
+  H5: (a) MIC-Public is never significantly worse than MIC-DP (F4, Holm, 24 cells)
+    and (b) for >=3 of 4 real datasets the mean gap U(MIC-Public)-U(MIC-DP) averaged
+    over eps in {0.1,0.3,0.5} exceeds the average over eps in {5,10}. pass if (a)
+    and (b); partial if one holds
+  H5_small_eps:
+  - 0.1
+  - 0.3
+  - 0.5
+  H5_large_eps:
+  - 5.0
+  - 10.0
+  H6: Adult, primary model. Loss = AUC(MIC-DP) - AUC(MIC-DP+Override). pass if at
+    every eps the upper 95% bootstrap bound of the mean paired loss is <= 0.01 AUC
+    (equivalence margin); partial if this holds at >=3 of 6 eps; fail otherwise. Holm-adjusted
+    Wilcoxon p-values (F5) are also reported
+  H6_margin: 0.01
+data:
+  raw_dir: data/raw
+  max_rows: 60000
+  files:
+    adult_data:
+      file: adult.data
+      url: https://raw.githubusercontent.com/mikeizbicki/datasets/master/csv/uci/adult.data
+      sha256: df25a4e32ed6f1bd4b3910d21a7bd661a09061eced7cb45555a519d9667cc87b
+      note: UCI id 2 training file; byte-identical to shap/shap data/adult.data
+    adult_test:
+      file: adult.test
+      url: https://raw.githubusercontent.com/mikeizbicki/datasets/master/csv/uci/adult.test
+      sha256: a2a9044bc167a35b2361efbabec64e89d69ce82d9790d2980119aac5fd7e9c05
+      note: UCI id 2 test file (labels end with '.')
+    adult_names:
+      file: adult.names
+      url: https://raw.githubusercontent.com/mikeizbicki/datasets/master/csv/uci/adult.names
+      sha256: c248284c0b5de30c9e1958d6cdd168a34a654758b620e68f46aefa83fc0a576a
+    cdc:
+      file: diabetes_binary_health_indicators_BRFSS2015.csv
+      url: https://raw.githubusercontent.com/kli252/cdc_diabetes_indicator_dataset/main/diabetes_binary_health_indicators_BRFSS2015.csv
+      sha256: 19f367e3e3350768f0c144c5d73ee5b355f67a57eaaa86ca7bd8aec594d8b1d0
+      note: Same file as UCI id 891 (253,680 x 22); byte-identical copy at UCB-stat-159-s23/project-group25
+    calhousing:
+      file: cal_housing.data
+      url: https://raw.githubusercontent.com/mikeizbicki/datasets/master/csv/statlib/cal_housing.data
+      sha256: a2b44dcc7e1c9091b43c4f458b25cbd1f7e8068d08edd26bc4703108d3fa6214
+      note: StatLib file that sklearn.fetch_california_housing downloads; transformed
+        exactly as sklearn does
+    appliances:
+      file: energydata_complete.csv
+      url: https://raw.githubusercontent.com/LuisM78/Appliances-energy-prediction-data/master/energydata_complete.csv
+      sha256: 2820bf712ad0275cb18b85a05250926100d8e65ebb9f4d2d016ca91ea152a25d
+      note: Original authors' repository (Candanedo et al. 2017); same file as UCI
+        id 374
+splits:
+  public: 0.15
+  train: 0.65
+  test: 0.2
+ranges:
+  fallback_percentiles:
+  - 0.5
+  - 99.5
+synthetic:
+  n: 20000
+  d: 20
+  block_size: 4
+  within_block_corr: 0.5
+  informative:
+  - 0
+  - 4
+  - 8
+  - 12
+  - 16
+  variants:
+    syn_lin:
+      signal: linear
+      lambda: 1.0
+    syn_nl_low:
+      signal: nonlinear
+      lambda: 0.5
+    syn_nl_mid:
+      signal: nonlinear
+      lambda: 1.0
+    syn_nl_high:
+      signal: nonlinear
+      lambda: 2.0
+datasets:
+  adult:
+    display: Adult
+    task: classification
+    target: income > 50K
+    expected_rows: 48842
+    drop:
+    - fnlwgt
+    - education
+    features:
+      age:
+        range:
+        - 17
+        - 90
+        source: 'documentation (UCI Adult: age 17-90)'
+      workclass:
+        categories:
+        - Private
+        - Self-emp-not-inc
+        - Self-emp-inc
+        - Federal-gov
+        - Local-gov
+        - State-gov
+        - Without-pay
+        - Never-worked
+        - '?'
+        source: adult.names category list + '?' (UCI variables table marks missing
+          values)
+      education-num:
+        range:
+        - 1
+        - 16
+        source: documentation (16 education levels)
+      marital-status:
+        categories:
+        - Married-civ-spouse
+        - Divorced
+        - Never-married
+        - Separated
+        - Widowed
+        - Married-spouse-absent
+        - Married-AF-spouse
+        source: adult.names category list
+      occupation:
+        categories:
+        - Tech-support
+        - Craft-repair
+        - Other-service
+        - Sales
+        - Exec-managerial
+        - Prof-specialty
+        - Handlers-cleaners
+        - Machine-op-inspct
+        - Adm-clerical
+        - Farming-fishing
+        - Transport-moving
+        - Priv-house-serv
+        - Protective-serv
+        - Armed-Forces
+        - '?'
+        source: adult.names category list + '?' (UCI variables table marks missing
+          values)
+      relationship:
+        categories:
+        - Wife
+        - Own-child
+        - Husband
+        - Not-in-family
+        - Other-relative
+        - Unmarried
+        source: adult.names category list
+      race:
+        categories:
+        - White
+        - Asian-Pac-Islander
+        - Amer-Indian-Eskimo
+        - Other
+        - Black
+        source: adult.names category list
+      sex:
+        categories:
+        - Female
+        - Male
+        source: adult.names category list
+      capital-gain:
+        range:
+        - 0
+        - 99999
+        source: domain knowledge (Census CPS top-code 99999)
+      capital-loss:
+        range:
+        - 0.0
+        - 2377.0
+        source: public-split
+      hours-per-week:
+        range:
+        - 1
+        - 99
+        source: 'documentation (UCI Adult: hours-per-week 1-99)'
+      native-country:
+        categories:
+        - United-States
+        - Cambodia
+        - England
+        - Puerto-Rico
+        - Canada
+        - Germany
+        - Outlying-US(Guam-USVI-etc)
+        - India
+        - Japan
+        - Greece
+        - South
+        - China
+        - Cuba
+        - Iran
+        - Honduras
+        - Philippines
+        - Italy
+        - Poland
+        - Jamaica
+        - Vietnam
+        - Mexico
+        - Portugal
+        - Ireland
+        - France
+        - Dominican-Republic
+        - Laos
+        - Ecuador
+        - Taiwan
+        - Haiti
+        - Columbia
+        - Hungary
+        - Guatemala
+        - Nicaragua
+        - Scotland
+        - Thailand
+        - Yugoslavia
+        - El-Salvador
+        - Trinadad&Tobago
+        - Peru
+        - Hong
+        - Holand-Netherlands
+        - '?'
+        source: adult.names category list + '?' (UCI variables table marks missing
+          values)
+  cdc_diabetes:
+    display: CDC-Diabetes
+    task: classification
+    target: Diabetes_binary
+    expected_rows: 253680
+    drop: []
+    features:
+      HighBP:
+        range:
+        - 0
+        - 1
+        source: 'documentation (BRFSS/UCI 891: binary)'
+      HighChol:
+        range:
+        - 0
+        - 1
+        source: documentation (binary)
+      CholCheck:
+        range:
+        - 0
+        - 1
+        source: documentation (binary)
+      BMI:
+        range:
+        - 12
+        - 98
+        source: documentation (BRFSS BMI range)
+      Smoker:
+        range:
+        - 0
+        - 1
+        source: documentation (binary)
+      Stroke:
+        range:
+        - 0
+        - 1
+        source: documentation (binary)
+      HeartDiseaseorAttack:
+        range:
+        - 0
+        - 1
+        source: documentation (binary)
+      PhysActivity:
+        range:
+        - 0
+        - 1
+        source: documentation (binary)
+      Fruits:
+        range:
+        - 0
+        - 1
+        source: documentation (binary)
+      Veggies:
+        range:
+        - 0
+        - 1
+        source: documentation (binary)
+      HvyAlcoholConsump:
+        range:
+        - 0
+        - 1
+        source: documentation (binary)
+      AnyHealthcare:
+        range:
+        - 0
+        - 1
+        source: documentation (binary)
+      NoDocbcCost:
+        range:
+        - 0
+        - 1
+        source: documentation (binary)
+      GenHlth:
+        range:
+        - 1
+        - 5
+        source: documentation (ordinal codes 1-5)
+      MentHlth:
+        range:
+        - 0
+        - 30
+        source: documentation (days in past 30)
+      PhysHlth:
+        range:
+        - 0
+        - 30
+        source: documentation (days in past 30)
+      DiffWalk:
+        range:
+        - 0
+        - 1
+        source: documentation (binary)
+      Sex:
+        range:
+        - 0
+        - 1
+        source: documentation (binary)
+      Age:
+        range:
+        - 1
+        - 13
+        source: documentation (13-level age category)
+      Education:
+        range:
+        - 1
+        - 6
+        source: documentation (ordinal codes 1-6)
+      Income:
+        range:
+        - 1
+        - 8
+        source: documentation (ordinal codes 1-8)
+  calhousing:
+    display: CalHousing
+    task: regression
+    target: median house value (100k USD)
+    expected_rows: 20640
+    drop: []
+    features:
+      MedInc:
+        range:
+        - 0.4999
+        - 15.0001
+        source: domain knowledge (1990 census bottom/top-coding of block median income
+          at 0.4999/15.0001; Geron 2019)
+      HouseAge:
+        range:
+        - 1
+        - 52
+        source: domain knowledge (median age top-coded at 52; Geron 2019)
+      AveRooms:
+        range:
+        - 2.3848634453781514
+        - 16.754458098307843
+        source: public-split
+      AveBedrms:
+        range:
+        - 0.8549972191323694
+        - 3.4500000000000095
+        source: public-split
+      Population:
+        range:
+        - 51.475
+        - 7095.625000000015
+        source: public-split
+      AveOccup:
+        range:
+        - 1.5009960014540167
+        - 6.921884796238251
+        source: public-split
+      Latitude:
+        range:
+        - 32.5
+        - 42.0
+        source: domain knowledge (California spans 32.53N-42.0N)
+      Longitude:
+        range:
+        - -124.5
+        - -114.1
+        source: domain knowledge (California spans 124.43W-114.13W)
+  appliances:
+    display: Appliances
+    task: regression
+    target: Appliances
+    expected_rows: 19735
+    drop:
+    - date
+    features:
+      lights:
+        range:
+        - 0.0
+        - 30.0
+        source: public-split
+      T1:
+        range:
+        - -40
+        - 80
+        source: physical (DHT-22 sensor range, -40..80 C)
+      RH_1:
+        range:
+        - 0
+        - 100
+        source: physical (relative humidity, %)
+      T2:
+        range:
+        - -40
+        - 80
+        source: physical (DHT-22 sensor range, -40..80 C)
+      RH_2:
+        range:
+        - 0
+        - 100
+        source: physical (relative humidity, %)
+      T3:
+        range:
+        - -40
+        - 80
+        source: physical (DHT-22 sensor range, -40..80 C)
+      RH_3:
+        range:
+        - 0
+        - 100
+        source: physical (relative humidity, %)
+      T4:
+        range:
+        - -40
+        - 80
+        source: physical (DHT-22 sensor range, -40..80 C)
+      RH_4:
+        range:
+        - 0
+        - 100
+        source: physical (relative humidity, %)
+      T5:
+        range:
+        - -40
+        - 80
+        source: physical (DHT-22 sensor range, -40..80 C)
+      RH_5:
+        range:
+        - 0
+        - 100
+        source: physical (relative humidity, %)
+      T6:
+        range:
+        - -40
+        - 80
+        source: physical (DHT-22 sensor range, -40..80 C)
+      RH_6:
+        range:
+        - 0
+        - 100
+        source: physical (relative humidity, %)
+      T7:
+        range:
+        - -40
+        - 80
+        source: physical (DHT-22 sensor range, -40..80 C)
+      RH_7:
+        range:
+        - 0
+        - 100
+        source: physical (relative humidity, %)
+      T8:
+        range:
+        - -40
+        - 80
+        source: physical (DHT-22 sensor range, -40..80 C)
+      RH_8:
+        range:
+        - 0
+        - 100
+        source: physical (relative humidity, %)
+      T9:
+        range:
+        - -40
+        - 80
+        source: physical (DHT-22 sensor range, -40..80 C)
+      RH_9:
+        range:
+        - 0
+        - 100
+        source: physical (relative humidity, %)
+      T_out:
+        range:
+        - -4.339999999999997
+        - 23.463333333333278
+        source: public-split
+      Press_mm_hg:
+        range:
+        - 733.2
+        - 770.5599999999998
+        source: public-split
+      RH_out:
+        range:
+        - 0
+        - 100
+        source: physical (relative humidity, %)
+      Windspeed:
+        range:
+        - 1.0
+        - 11.8333333333333
+        source: public-split
+      Visibility:
+        range:
+        - 9.533333333333328
+        - 65.0
+        source: public-split
+      Tdewpoint:
+        range:
+        - -5.8333333333333295
+        - 14.4
+        source: public-split
+      rv1:
+        range:
+        - 0.2939780871383845
+        - 49.60841719992459
+        source: public-split
+      rv2:
+        range:
+        - 0.2939780871383845
+        - 49.60841719992459
+        source: public-split
+  syn_lin:
+    display: Synthetic-lin
+    task: regression
+    synthetic: true
+    features: &id001
+      x0:
+        range:
+        - -4
+        - 4
+        source: generating process
+      x1:
+        range:
+        - -4
+        - 4
+        source: generating process
+      x2:
+        range:
+        - -4
+        - 4
+        source: generating process
+      x3:
+        range:
+        - -4
+        - 4
+        source: generating process
+      x4:
+        range:
+        - -4
+        - 4
+        source: generating process
+      x5:
+        range:
+        - -4
+        - 4
+        source: generating process
+      x6:
+        range:
+        - -4
+        - 4
+        source: generating process
+      x7:
+        range:
+        - -4
+        - 4
+        source: generating process
+      x8:
+        range:
+        - -4
+        - 4
+        source: generating process
+      x9:
+        range:
+        - -4
+        - 4
+        source: generating process
+      x10:
+        range:
+        - -4
+        - 4
+        source: generating process
+      x11:
+        range:
+        - -4
+        - 4
+        source: generating process
+      x12:
+        range:
+        - -4
+        - 4
+        source: generating process
+      x13:
+        range:
+        - -4
+        - 4
+        source: generating process
+      x14:
+        range:
+        - -4
+        - 4
+        source: generating process
+      x15:
+        range:
+        - -4
+        - 4
+        source: generating process
+      x16:
+        range:
+        - -4
+        - 4
+        source: generating process
+      x17:
+        range:
+        - -4
+        - 4
+        source: generating process
+      x18:
+        range:
+        - -4
+        - 4
+        source: generating process
+      x19:
+        range:
+        - -4
+        - 4
+        source: generating process
+  syn_nl_low:
+    display: Synthetic-nl-low
+    task: regression
+    synthetic: true
+    features: *id001
+  syn_nl_mid:
+    display: Synthetic-nl-mid
+    task: regression
+    synthetic: true
+    features: *id001
+  syn_nl_high:
+    display: Synthetic-nl-high
+    task: regression
+    synthetic: true
+    features: *id001
+outputs:
+  dir: results/ch4
+public_baselines:
+  datasets:
+  - adult
+  - cdc_diabetes
+  eps_grid:
+  - 0.1
+  - 0.3
+  - 0.5
+  - 1.0
+  - 5.0
+  - 10.0
+  n_trials: 30
+  n_jobs: 2
+  out_dir: results/ch4/public
+  public_subsample_seed: 20261107
+  shift_seed: 20261108
+  bootstrap_seed: 20261109
+  sizes:
+    p15: 0.15
+    p5: 0.05
+    p1: 0.01
+  n_records:
+    adult:
+      p15: 7327
+      p5: 2442
+      p1: 488
+      shift5: 2442
+    cdc_diabetes:
+      p15: 9000
+      p5: 3000
+      p1: 600
+      shift5: 3000
+  shift:
+    covariate:
+      adult: age
+      cdc_diabetes: Age
+    median:
+      adult: 38.0
+      cdc_diabetes: 8.0
+    pool_size:
+      adult: 3868
+      cdc_diabetes: 4607
+    size: 0.05
+  split_hashes:
+    adult:
+      X_train: c747c97e9af191a162c5926a389c8992fa6a29e7d7bb4f681b93661ba08b44c0
+      y_train: a8ee3768e25c88159702fae342c5a38849ab4a35154809d7f148c83a3984ae17
+      X_test: 93904e4194b0d90031dbfed3145106e417e6bf217991a6adb256c74c43d64c16
+      y_test: 738b897a442d1808d36473749fe92668c9591aa90c4275932fcacb1c8b854dba
+      idx_train: eddab26383d81d6de139824d31065ccd03398c1ed121b9da910b6e892ee1ae34
+      idx_test: 37954755e50c277cf42e5a5775266b22d88a9f1bca59e8ed1ea874331a34685a
+      X_public: dffc4cd9c4d1ed05fdfb0b58b505f0b2d68cfb5406ae5fb0789de02cae5943f3
+    cdc_diabetes:
+      X_train: 8e8a82606d3061ad9b8df147f7aa35bf0ac00a9ecb079f3cff9ebdcf9bc933a5
+      y_train: 73c5574d69060b0a7c9aa44229a0edd7125d0bcf810456350c293315f97547bf
+      X_test: b6a9e3cab3cca8a5e85acb52a11837928a6be81546ad3a65840aa765d642140a
+      y_test: d5e3f4d4e87247de59121132df937a370cd190dab9624f4166aa9eeac83796ea
+      idx_train: 45da71cd5004899f23c1225bbc093d9c364fedbccbd532029e875b073152ea84
+      idx_test: 2da6c752f628a46bca345ba9b10f7ffe789225d3ae993f8a3b2b0fc14e85cddf
+      X_public: dc5f025cd9fd3cd735133b06c5ccdde7a91e7b624a26c503df22e6c2a415a053
+  methods:
+    public_only:
+      sizes:
+      - p15
+      - p5
+      - p1
+      - shift5
+    ft_uniform:
+      release: uniform
+      sizes:
+      - p15
+      - p5
+    ft_mic_dp:
+      release: mic_dp
+      sizes:
+      - p15
+      - p5
+    pooled_uniform:
+      release: uniform
+      sizes:
+      - p15
+      - p5
+    mic_public_small:
+      ids:
+        p5: 21
+        p1: 22
+        shift5: 23
+  fine_tuning:
+    primary: HistGradientBoostingClassifier(max_iter=100, warm_start=True, early_stopping=False,
+      random_state=seed) fit on the public rows, then set_params(max_iter=200) and
+      fit on the privatized rows (100 more iterations)
+    secondary: LogisticRegression(C=1, max_iter=2000, warm_start=True) fit on the
+      public rows, then fit on the privatized rows (lbfgs starts from the public solution)
+    prediction: noise-aware expectation over the release noise of the whole 200-tree
+      ensemble (primary); clean predict_proba (secondary)
+  pooled:
+    prediction: 'noise-aware with the Uniform noise scales sigma_j (primary): E over
+      eta ~ N(0, diag(sigma^2)) of f(x + eta), the noise of the private rows; public
+      rows carry zero noise, so no other noise distribution enters; the expectation
+      is not mixed with a clean prediction'
+  best_private:
+    adult:
+      0.1: mic_dp
+      0.3: mic_public
+      0.5: mic_public
+      1.0: mic_public
+      5.0: mic_public
+      10.0: mic_public
+    cdc_diabetes:
+      0.1: mic_public
+      0.3: mic_public
+      0.5: mic_public
+      1.0: mic_public
+      5.0: mic_public
+      10.0: mic_public
+  best_private_means:
+    adult:
+      0.1:
+      - 0.5315
+      - 0.5468
+      - 0.5466
+      0.3:
+      - 0.6056
+      - 0.5722
+      - 0.6719
+      0.5:
+      - 0.6679
+      - 0.6117
+      - 0.6799
+      1.0:
+      - 0.7083
+      - 0.7048
+      - 0.7796
+      5.0:
+      - 0.7985
+      - 0.8196
+      - 0.8202
+      10.0:
+      - 0.801
+      - 0.8227
+      - 0.8275
+    cdc_diabetes:
+      0.1:
+      - 0.5104
+      - 0.4976
+      - 0.546
+      0.3:
+      - 0.5827
+      - 0.6069
+      - 0.6979
+      0.5:
+      - 0.6259
+      - 0.583
+      - 0.7157
+      1.0:
+      - 0.7117
+      - 0.6904
+      - 0.7925
+      5.0:
+      - 0.7923
+      - 0.7896
+      - 0.7993
+      10.0:
+      - 0.7976
+      - 0.7983
+      - 0.8003
+  stats:
+    F6: best private method (best_private) vs Public-Only, 2 datasets x {p15, p5,
+      p1} x 6 eps = 36 tests, G = AUC(best) - AUC(Public-Only)
+    F7: 'reporting item 3: each of ft_uniform, ft_mic_dp, pooled_uniform at p15 and
+      p5 against each parent (Public-Only at the same size; the private method alone:
+      Uniform for ft_uniform and pooled_uniform, MIC-DP for ft_mic_dp), 2 datasets
+      x 6 eps x 2 sizes x 3 methods x 2 parents = 144 tests'
+    F8: 'reporting item 4: MIC-Public (p15, p5, p1) vs MIC-DP, 2 datasets x 3 sizes
+      x 6 eps = 36 tests'
+    shift: 'exploratory, no family: mean differences with bootstrap intervals and
+      unadjusted Wilcoxon p'
+    UR: (mean U_m - mean U_Uniform) / (mean U_NonPrivate - mean U_Uniform) per (dataset,
+      eps), ratio of trial means, bootstrap interval over trials, as in the main run
+draft3:
+  datasets:
+  - adult
+  - cdc_diabetes
+  eps_grid:
+  - 0.1
+  - 0.3
+  - 0.5
+  - 1.0
+  - 5.0
+  - 10.0
+  n_trials: 30
+  n_jobs: 2
+  out_dir: results/ch4/draft3
+  bootstrap_seed: 20261112
+  bootstrap_resamples: 10000
+  ci: 0.95
+  refit:
+    methods:
+    - uniform
+    - mic_dp
+    - mic_public
+    predictions:
+      noise_aware: predict_noise_aware(model, X[:, keep], sigma[keep]) (src/noiseaware.py),
+        as in the main run
+      direct: model.predict_proba(X[:, keep])[:, 1] on the clean inputs
+    threshold:
+      balanced_accuracy: sklearn balanced_accuracy_score = (TPR + TNR) / 2
+    low_trials:
+      threshold: 0.45
+  part_a:
+    a1_bins:
+    - 0.45
+    - 0.55
+    a1_eps:
+    - 0.1
+    - 0.3
+    - 0.5
+    a1_hist_bin_width: 0.02
+    a3_cells:
+    - - cdc_diabetes
+      - 5.0
+    - - adult
+      - 0.5
+    - - cdc_diabetes
+      - 0.5
+  part_b:
+    methods:
+    - uniform
+    - mic_dp
+    family_index: 10
+  part_c:
+    methods:
+    - ft_uniform
+    - ft_mic_dp
+    sizes:
+    - p15
+    - p5
+    start_clip: 3.0
+    l2_continued: 1.0
+    family_index:
+      adult: 20
+      cdc_diabetes: 21
+  part_d:
+    k:
+      adult:
+      - 3
+      - 6
+      cdc_diabetes:
+      - 5
+      - 11
+    ids:
+      per_record_q: 41
+      per_record_h: 42
+      fixed_q: 43
+      fixed_h: 44
+    family_index: 30
+_run_draft3:
+  python: 3.13.18
+  numpy: 2.5.3
+  pandas: 3.0.5
+  scikit-learn: 1.9.1
+  scipy: 1.18.1
+  matplotlib: 3.11.2
