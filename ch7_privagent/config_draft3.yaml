@@ -1,0 +1,87 @@
+# Chapter 7, Draft 3 follow-up: misspecified simulated users. EXPLORATORY analysis, not part of the
+# pre-registration (commit 7bffabb). config.yaml, hypotheses.md, src/ of the main run and results/ch7/ are not
+# changed. Settings fixed and committed before the run:  python -m src.misspec && python -m src.misspec_report
+# Outputs: results/ch7/draft3/. Every output is labeled exploratory.
+
+out_dir: results/ch7/draft3
+replications: 20                 # as the main run
+n_users: 1000                    # uniform true weights, Dirichlet(1, 1, 1)
+tau: 0.1                         # user temperature of the logistic part of every population (primary tau)
+analyst_tau: 0.1                 # Bayesian inference, unchanged
+
+# Seeds. Every population uses the streams of the stored uniform population (population code 0) for the true
+# weights, the prompt order, the uniform answer draws, the repair draw, the slider noise and the prior draws of
+# the Bayesian inference: np.random.default_rng([seed, replication, stream_offset]) with the offsets of
+# config.yaml. The populations therefore share the same users and the same draws (common random numbers) and
+# differ only in the response rule. A user answers A when u < P(A) with the same u as in the stored run.
+# The only new draw is the choice of the privacy-always users: np.random.default_rng([seed, replication,
+# 100 * code + 10]) with the population code below; exactly round(f * 1000) users are drawn without replacement.
+populations:
+  baseline:        {code: 0,  rule: logistic}                    # = stored main run; reproduced as a check
+  lapse_0.1:       {code: 11, rule: lapse, p: 0.1}
+  lapse_0.2:       {code: 12, rule: lapse, p: 0.2}
+  lapse_0.33:      {code: 13, rule: lapse, p: 0.33}
+  privacy_0.1:     {code: 21, rule: privacy_always, f: 0.1}
+  privacy_0.25:    {code: 22, rule: privacy_always, f: 0.25}
+  side_fixed_0.5:  {code: 31, rule: side_bias, b: 0.5, sides: fixed}
+  side_fixed_1.0:  {code: 32, rule: side_bias, b: 1.0, sides: fixed}
+  side_alt_0.5:    {code: 33, rule: side_bias, b: 0.5, sides: alternating}
+  side_alt_1.0:    {code: 34, rule: side_bias, b: 1.0, sides: alternating}
+  lexicographic:   {code: 41, rule: lexicographic}
+
+# Response rules (P(A) per prompt; option A favors the first criterion j of the pair (j, k), as in src/dialogue.py;
+# the same rule applies to the repair prompt, which is asked when the answers after the rule form a cycle):
+#   logistic:       P(A) = sigmoid((w_j - w_k)(h - l) / tau)
+#   lapse:          each answer is replaced by a fair coin flip with probability p: P(A) = (1 - p) P_logistic + p / 2
+#   privacy_always: the drawn users choose the option that favors LP in every prompt that involves LP (pairs LP-LA,
+#                   LP-CR; there LP is criterion j, so P(A) = 1); their LA-CR prompts and all prompts of the other
+#                   users follow the logistic rule
+#   side_bias:      P(first-shown option) = sigmoid(z + b), z = log-odds of the first-shown option under the
+#                   logistic rule. Side assignment: the stored design has no screen position; option A (favoring the
+#                   first criterion of the pair: LP in LP-LA and LP-CR, LA in LA-CR) is the same option in every
+#                   prompt and the privacy option is never moved. Two assignments are therefore run:
+#                     fixed:       option A is shown first in every prompt (the stored design read literally), so
+#                                  the bias always favors LP in LP-LA and LP-CR and LA in LA-CR;
+#                     alternating: option A is shown first at presented positions 1, 3, 5 and second at 2, 4, 6
+#                                  (position in the user's random order); the repair prompt (position 7) shows A first.
+#   lexicographic:  the user picks the option that is better on the highest-weighted criterion; in a prompt on
+#                   (j, k) the third criterion is equal in both options, so if it is the highest-weighted the next
+#                   criterion decides: A if w_j > w_k, B if w_j < w_k (ties have probability 0). The size of the
+#                   difference is ignored; this equals the tau -> 0 limit of the logistic rule.
+
+methods:   # internal key -> name used in every output (current names)
+  pa6: Vote-6                    # vote inference, six prompts on three pairs, with the consistency check
+  pa6_bayes: Bayes-6             # Bayesian inference on the same answers
+  lpla: Vote-LPLA                # vote inference, six LP-LA prompts
+  lpla_bayes: PrivAgent          # Bayesian inference on the six LP-LA prompts
+  expert: Expert default         # (0.4, 0.4, 0.2)
+  slider: Anchored slider        # lambda = 0.4, report noise sd 0.1, as stored; not affected by the response rule
+# The expert default and the anchored slider do not use the dialogue, so they are identical in every population.
+
+metrics:
+  # privacy-share error |pi_hat - pi*|, cosine agreement, budget agreement and closeness loss with the linear LP
+  # map on Adult and CDC-Diabetes (Chapter 6 matrices, src/uldp.py). Pooled means over all users of all
+  # replications, 95% percentile cluster bootstrap over replications (10,000 resamples), seed [20261113, crc32(key)].
+  settings: [[adult, linear], [cdc, linear]]
+  bootstrap_resamples: 10000
+  bootstrap_seed: 20261113
+  # privacy-always populations: metrics also for the affected and the unaffected users separately.
+
+baseline_check: "baseline population: estimated weights of every method equal users.parquet (uniform, main) to 1e-12 for every user, and the decisions equal decisions.parquet"
+
+figures:
+  # misspec_ch7.pdf: budget agreement on Adult (linear) per population and method with interval bars.
+  # Regenerated thesis figures from the stored results/ch7/ data with the current names (Vote-6, Bayes-6,
+  # Vote-LPLA, PrivAgent, Expert default, Anchored slider), serif, 6.3 in, the stored palette and styles:
+  #   budget_agreement_ch7.pdf: layout of the stored figure (four settings, horizontal bars with intervals)
+  #   The archive of the main run (results/ch7/figures/) holds budget_agreement_ch7 and rounds_ch7 but no
+  #   tau_ch7; its rounds_ch7 has two panels (cosine, budget agreement), while the thesis caption of
+  #   fig:ch7:rounds describes three panels and fig:ch7:tau two panels. The thesis captions are followed:
+  #   rounds_ch7.pdf: Vote-6 after the first k prompts, (a) cosine agreement, (b) privacy-share error, (c) budget
+  #                   agreement on Adult (linear), 95% bands, dashed line = expert default;
+  #   tau_ch7.pdf:    the four dialogue variants against the user tau in {0.05, 0.1, 0.2, 0.4}, (a) cosine
+  #                   agreement, (b) budget agreement on Adult (linear), 95% intervals, dashed line = expert default.
+  #   The Uniform default (same eps* as the expert default for every user, a sanity check of the main run) is not
+  #   among the six names asked for and is left out of the regenerated budget_agreement_ch7.
+  #   The stored figures in results/ch7/figures/ are not overwritten; the new files are in results/ch7/draft3/.
+  palette: {blue: "#2a78d6", orange: "#eb6834", green: "#1baf7a", purple: "#7c5cc4", gray: "#52514e"}

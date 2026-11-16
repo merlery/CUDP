@@ -1,0 +1,10 @@
+% CDC-Diabetes | primary (HistGradientBoosting) model | ROC-AUC (higher is better), mean $\pm$ std over 30 trials
+% columns: eps & Uniform & MIC-DP & MIC-Public & Pearson-Alloc & Pearson-Adj & PartialCorr-Adj
+% caption note: Non-private ROC-AUC = 0.8247 $\pm$ 0.0000
+% bold = best DP method in the row; $^\dagger$ = MIC-DP significantly better than all four baselines (Uniform, Pearson-Alloc, Pearson-Adj, PartialCorr-Adj), paired Wilcoxon, Holm-adjusted p < 0.05
+0.1 & 0.5104 $\pm$ 0.1201 & 0.4976 $\pm$ 0.1250 & \textbf{0.5460} $\pm$ 0.1811 & 0.5267 $\pm$ 0.1054 & 0.5288 $\pm$ 0.1260 & 0.5277 $\pm$ 0.1349 \\
+0.3 & 0.5827 $\pm$ 0.1063 & 0.6069 $\pm$ 0.1125 & \textbf{0.6979} $\pm$ 0.1179 & 0.5805 $\pm$ 0.1062 & 0.5522 $\pm$ 0.1397 & 0.5924 $\pm$ 0.1060 \\
+0.5 & 0.6259 $\pm$ 0.1072 & 0.5830 $\pm$ 0.1279 & \textbf{0.7157} $\pm$ 0.1092 & 0.6218 $\pm$ 0.1123 & 0.6138 $\pm$ 0.0876 & 0.6161 $\pm$ 0.0964 \\
+1 & 0.7117 $\pm$ 0.0508 & 0.6904 $\pm$ 0.0556 & \textbf{0.7925} $\pm$ 0.0112 & 0.7223 $\pm$ 0.0852 & 0.6781 $\pm$ 0.0795 & 0.6804 $\pm$ 0.0789 \\
+5 & 0.7923 $\pm$ 0.0047 & 0.7896 $\pm$ 0.0075 & 0.7993 $\pm$ 0.0020 & \textbf{0.7997} $\pm$ 0.0023 & 0.7842 $\pm$ 0.0066 & 0.7900 $\pm$ 0.0064 \\
+10 & 0.7976 $\pm$ 0.0026 & 0.7983 $\pm$ 0.0044 & 0.8003 $\pm$ 0.0010 & \textbf{0.8006} $\pm$ 0.0016 & 0.7929 $\pm$ 0.0030 & 0.7947 $\pm$ 0.0035 \\

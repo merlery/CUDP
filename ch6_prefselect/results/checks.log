@@ -1,0 +1,5 @@
+PASS LA columns of Adult and CDC-Diabetes equal the matrices hard-coded in src/prefselect.py (5e-6)
+PASS CalHousing LA at eps = 10 is 0.016 and Appliances LA is 0 at every budget (thesis table)
+PASS profile table: closeness coefficients and selected budgets as in the thesis
+PASS selection frequency over the 230 simplex vectors as in the appendix table (spot-checked rows)
+PASS fixed default eps = 1 (linear): agreement 37.4% / 34.8%, mean loss 0.134 / 0.115, as in the thesis

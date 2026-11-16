@@ -1,0 +1,25 @@
+% C (CDC-Diabetes): Public-Pretrain + FT, repaired (start clipped to [-3, 3], l2 = 1 for the continued trees) and stored, primary model, noise-aware ROC-AUC, mean $\pm$ std over 30 trials; columns: method & public size & eps & repaired & constant (repaired) & max |leaf| (continued trees, max over trials) & F7r vs Public-Only & F7r vs parent & stored & constant (stored)
+Public-Pretrain + Uniform-FT & 15% & 0.1 & 0.197 $\pm$ 0.002 & 0 & 0.553 & B better & B better & 0.713 $\pm$ 0.061 & 0 \\
+ &  & 0.3 & 0.197 $\pm$ 0.002 & 0 & 0.519 & B better & B better & 0.734 $\pm$ 0.055 & 0 \\
+ &  & 0.5 & 0.198 $\pm$ 0.002 & 0 & 0.627 & B better & B better & 0.740 $\pm$ 0.060 & 0 \\
+ &  & 1 & 0.199 $\pm$ 0.002 & 0 & 0.532 & B better & B better & 0.774 $\pm$ 0.019 & 0 \\
+ &  & 5 & 0.331 $\pm$ 0.014 & 0 & 0.665 & B better & B better & 0.795 $\pm$ 0.012 & 0 \\
+ &  & 10 & 0.661 $\pm$ 0.014 & 0 & 0.529 & B better & B better & 0.801 $\pm$ 0.002 & 0 \\
+ & 5% & 0.1 & 0.199 $\pm$ 0.002 & 0 & 0.806 & B better & B better & 0.754 $\pm$ 0.032 & 0 \\
+ &  & 0.3 & 0.200 $\pm$ 0.003 & 0 & 0.89 & B better & B better & 0.744 $\pm$ 0.044 & 0 \\
+ &  & 0.5 & 0.200 $\pm$ 0.002 & 0 & 0.746 & B better & B better & 0.741 $\pm$ 0.032 & 0 \\
+ &  & 1 & 0.201 $\pm$ 0.003 & 0 & 0.719 & B better & B better & 0.749 $\pm$ 0.031 & 0 \\
+ &  & 5 & 0.217 $\pm$ 0.005 & 0 & 0.79 & B better & B better & 0.727 $\pm$ 0.063 & 0 \\
+ &  & 10 & 0.292 $\pm$ 0.015 & 0 & 0.64 & B better & B better & 0.744 $\pm$ 0.054 & 0 \\
+Public-Pretrain + MIC-DP-FT & 15% & 0.1 & 0.197 $\pm$ 0.002 & 0 & 0.589 & B better & B better & 0.725 $\pm$ 0.062 & 0 \\
+ &  & 0.3 & 0.201 $\pm$ 0.010 & 0 & 0.562 & B better & B better & 0.749 $\pm$ 0.029 & 0 \\
+ &  & 0.5 & 0.202 $\pm$ 0.008 & 0 & 0.503 & B better & B better & 0.721 $\pm$ 0.062 & 0 \\
+ &  & 1 & 0.205 $\pm$ 0.014 & 0 & 0.666 & B better & B better & 0.756 $\pm$ 0.031 & 0 \\
+ &  & 5 & 0.367 $\pm$ 0.157 & 0 & 0.551 & B better & B better & 0.794 $\pm$ 0.006 & 0 \\
+ &  & 10 & 0.750 $\pm$ 0.052 & 0 & 0.489 & B better & B better & 0.794 $\pm$ 0.017 & 0 \\
+ & 5% & 0.1 & 0.199 $\pm$ 0.002 & 0 & 0.931 & B better & B better & 0.741 $\pm$ 0.049 & 0 \\
+ &  & 0.3 & 0.202 $\pm$ 0.006 & 0 & 0.891 & B better & B better & 0.743 $\pm$ 0.041 & 0 \\
+ &  & 0.5 & 0.203 $\pm$ 0.007 & 0 & 0.784 & B better & B better & 0.747 $\pm$ 0.040 & 0 \\
+ &  & 1 & 0.207 $\pm$ 0.013 & 0 & 0.841 & B better & B better & 0.733 $\pm$ 0.051 & 0 \\
+ &  & 5 & 0.263 $\pm$ 0.110 & 0 & 0.901 & B better & B better & 0.703 $\pm$ 0.111 & 2 \\
+ &  & 10 & 0.498 $\pm$ 0.175 & 0 & 1.06 & B better & B better & 0.715 $\pm$ 0.096 & 3 \\

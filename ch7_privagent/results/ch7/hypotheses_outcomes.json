@@ -1,0 +1,32 @@
+{
+ "H1": {
+  "outcome": "fail",
+  "family": "G1",
+  "tests": 2,
+  "in_direction": 0
+ },
+ "H2": {
+  "outcome": "fail",
+  "family": "G2",
+  "tests": 2,
+  "in_direction": 0
+ },
+ "H3": {
+  "outcome": "pass",
+  "family": "G3",
+  "tests": 1,
+  "in_direction": 1
+ },
+ "H4": {
+  "outcome": "fail",
+  "family": "G4",
+  "tests": 2,
+  "in_direction": 0
+ },
+ "H5": {
+  "outcome": "fail",
+  "family": "G5",
+  "tests": 1,
+  "in_direction": 0
+ }
+}

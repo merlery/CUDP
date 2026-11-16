@@ -1,0 +1,9 @@
+dataset,lp_map,standard,fixed_ideals,same_on_grid,defined
+Adult,linear,"1, 5, 1, 1","1, 5, 1, 1",0.9435,230
+Adult,exponential,"0.1, 10, 0.1, 0.1","0.1, 10, 0.1, 1",0.9174,230
+CDC-Diabetes,linear,"1, 5, 1, 1","1, 5, 1, 1",0.9348,230
+CDC-Diabetes,exponential,"0.1, 10, 0.3, 0.3","0.1, 10, 0.3, 0.3",0.9043,230
+CalHousing,linear,"0.1, 10, 10, 10","0.1, 0.1, 0.1, 0.1",0.5,230
+CalHousing,exponential,"0.1, 10, 10, 10","0.1, 0.1, 0.1, 0.1",0.5565,230
+Appliances,linear,"0.1, 0.1, 0.1, 0.1","0.1, 0.1, 0.1, 0.1",1.0,210
+Appliances,exponential,"0.1, 0.1, 0.1, 0.1","0.1, 0.1, 0.1, 0.1",1.0,210

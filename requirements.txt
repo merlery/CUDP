@@ -1,16 +1,19 @@
-# Pinned dependencies of the dissertation code (CPU only). Install with
+# Pinned dependencies of the dissertation code, all chapters (CPU only). Python 3.13 (runs used 3.13.18).
 #   pip install --extra-index-url https://download.pytorch.org/whl/cpu -r requirements.txt
-# (the extra index gives the small CPU-only PyTorch wheel; PyPI's default Linux wheel bundles CUDA).
-# Python 3.13.
-#
-# Chapter 5 (ch5_ldpmic/):
+# The extra index gives the CPU-only PyTorch wheel; PyPI's default Linux wheel bundles CUDA.
+# Merged from the pinned lists of Chapters 4, 6 and 7, of Chapter 5, and of ch8_user_study/code/requirements.txt.
+# No two lists pin different versions of the same package.
+joblib==1.6.0
+matplotlib==3.11.2
 numpy==2.5.3
-scipy==1.18.1
+opacus==1.6.0
 pandas==3.0.5
-scikit-learn==1.9.1
+pyarrow==26.0.1
+pytest==9.1.1
 PyYAML==6.0.3
+scikit-learn==1.9.1
+scipy==1.18.1
+statsmodels==0.15.0
 torch==2.14.1
 torchvision==0.29.1
-opacus==1.6.0
-matplotlib==3.11.2
-pytest==9.1.1
+# Optional, Chapter 4 cross-check against the original MIC estimator only: minepy (needs Python <= 3.10)

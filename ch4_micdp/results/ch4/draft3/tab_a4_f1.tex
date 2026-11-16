@@ -1,0 +1,97 @@
+% A.4: family F1 (MIC-DP vs baseline, Holm over 96) with the primary model and with the secondary (linear) model; columns: dataset & eps & baseline & mean difference (primary) & outcome & mean difference (secondary) & outcome; difference in U (ROC-AUC, or -MAE for regression)
+Adult & 0.1 & Uniform & +0.015 & n.s. & +0.021 & n.s. \\
+Adult & 0.1 & Pearson-Alloc & +0.033 & n.s. & +0.032 & n.s. \\
+Adult & 0.1 & Pearson-Adj & +0.032 & n.s. & +0.038 & n.s. \\
+Adult & 0.1 & PartialCorr-Adj & +0.022 & n.s. & +0.021 & n.s. \\
+Adult & 0.3 & Uniform & -0.033 & n.s. & -0.014 & n.s. \\
+Adult & 0.3 & Pearson-Alloc & +0.009 & n.s. & +0.019 & n.s. \\
+Adult & 0.3 & Pearson-Adj & +0.025 & n.s. & +0.040 & n.s. \\
+Adult & 0.3 & PartialCorr-Adj & +0.041 & n.s. & +0.047 & n.s. \\
+Adult & 0.5 & Uniform & -0.056 & n.s. & -0.069 & n.s. \\
+Adult & 0.5 & Pearson-Alloc & -0.037 & n.s. & -0.041 & n.s. \\
+Adult & 0.5 & Pearson-Adj & +0.030 & n.s. & +0.014 & n.s. \\
+Adult & 0.5 & PartialCorr-Adj & +0.004 & n.s. & +0.003 & n.s. \\
+Adult & 1 & Uniform & -0.003 & n.s. & +0.007 & n.s. \\
+Adult & 1 & Pearson-Alloc & -0.045 & n.s. & -0.041 & n.s. \\
+Adult & 1 & Pearson-Adj & +0.035 & n.s. & +0.044 & n.s. \\
+Adult & 1 & PartialCorr-Adj & -0.003 & n.s. & +0.007 & n.s. \\
+Adult & 5 & Uniform & +0.021 & A better & +0.020 & A better \\
+Adult & 5 & Pearson-Alloc & -0.001 & n.s. & -0.002 & n.s. \\
+Adult & 5 & Pearson-Adj & +0.038 & A better & +0.036 & A better \\
+Adult & 5 & PartialCorr-Adj & +0.041 & A better & +0.039 & A better \\
+Adult & 10 & Uniform & +0.022 & A better & +0.020 & A better \\
+Adult & 10 & Pearson-Alloc & -0.000 & n.s. & -0.003 & n.s. \\
+Adult & 10 & Pearson-Adj & +0.034 & A better & +0.031 & A better \\
+Adult & 10 & PartialCorr-Adj & +0.034 & A better & +0.032 & A better \\
+CDC-Diabetes & 0.1 & Uniform & -0.013 & n.s. & +0.008 & n.s. \\
+CDC-Diabetes & 0.1 & Pearson-Alloc & -0.029 & n.s. & -0.023 & n.s. \\
+CDC-Diabetes & 0.1 & Pearson-Adj & -0.031 & n.s. & -0.019 & n.s. \\
+CDC-Diabetes & 0.1 & PartialCorr-Adj & -0.030 & n.s. & -0.015 & n.s. \\
+CDC-Diabetes & 0.3 & Uniform & +0.024 & n.s. & +0.017 & n.s. \\
+CDC-Diabetes & 0.3 & Pearson-Alloc & +0.026 & n.s. & +0.027 & n.s. \\
+CDC-Diabetes & 0.3 & Pearson-Adj & +0.055 & n.s. & +0.048 & n.s. \\
+CDC-Diabetes & 0.3 & PartialCorr-Adj & +0.014 & n.s. & +0.011 & n.s. \\
+CDC-Diabetes & 0.5 & Uniform & -0.043 & n.s. & -0.052 & n.s. \\
+CDC-Diabetes & 0.5 & Pearson-Alloc & -0.039 & n.s. & -0.021 & n.s. \\
+CDC-Diabetes & 0.5 & Pearson-Adj & -0.031 & n.s. & -0.028 & n.s. \\
+CDC-Diabetes & 0.5 & PartialCorr-Adj & -0.033 & n.s. & -0.031 & n.s. \\
+CDC-Diabetes & 1 & Uniform & -0.021 & n.s. & -0.026 & n.s. \\
+CDC-Diabetes & 1 & Pearson-Alloc & -0.032 & n.s. & -0.032 & n.s. \\
+CDC-Diabetes & 1 & Pearson-Adj & +0.012 & n.s. & +0.019 & n.s. \\
+CDC-Diabetes & 1 & PartialCorr-Adj & +0.010 & n.s. & +0.002 & n.s. \\
+CDC-Diabetes & 5 & Uniform & -0.003 & n.s. & -0.002 & n.s. \\
+CDC-Diabetes & 5 & Pearson-Alloc & -0.010 & B better & -0.010 & B better \\
+CDC-Diabetes & 5 & Pearson-Adj & +0.005 & n.s. & +0.004 & n.s. \\
+CDC-Diabetes & 5 & PartialCorr-Adj & -0.000 & n.s. & -0.001 & n.s. \\
+CDC-Diabetes & 10 & Uniform & +0.001 & n.s. & +0.001 & n.s. \\
+CDC-Diabetes & 10 & Pearson-Alloc & -0.002 & n.s. & -0.002 & n.s. \\
+CDC-Diabetes & 10 & Pearson-Adj & +0.005 & A better & +0.005 & A better \\
+CDC-Diabetes & 10 & PartialCorr-Adj & +0.004 & A better & +0.004 & A better \\
+CalHousing & 0.1 & Uniform & -0.000 & n.s. & -0.000 & n.s. \\
+CalHousing & 0.1 & Pearson-Alloc & -0.000 & n.s. & +0.000 & n.s. \\
+CalHousing & 0.1 & Pearson-Adj & -0.000 & n.s. & -0.000 & n.s. \\
+CalHousing & 0.1 & PartialCorr-Adj & -0.000 & n.s. & -0.000 & n.s. \\
+CalHousing & 0.3 & Uniform & -0.000 & n.s. & -0.000 & n.s. \\
+CalHousing & 0.3 & Pearson-Alloc & -0.000 & n.s. & +0.000 & n.s. \\
+CalHousing & 0.3 & Pearson-Adj & -0.000 & n.s. & -0.000 & n.s. \\
+CalHousing & 0.3 & PartialCorr-Adj & -0.000 & n.s. & -0.000 & n.s. \\
+CalHousing & 0.5 & Uniform & -0.000 & n.s. & -0.000 & n.s. \\
+CalHousing & 0.5 & Pearson-Alloc & -0.000 & n.s. & -0.000 & n.s. \\
+CalHousing & 0.5 & Pearson-Adj & -0.000 & n.s. & -0.000 & n.s. \\
+CalHousing & 0.5 & PartialCorr-Adj & -0.000 & n.s. & -0.000 & n.s. \\
+CalHousing & 1 & Uniform & +0.000 & n.s. & -0.000 & n.s. \\
+CalHousing & 1 & Pearson-Alloc & -0.000 & n.s. & +0.000 & n.s. \\
+CalHousing & 1 & Pearson-Adj & +0.000 & n.s. & +0.000 & n.s. \\
+CalHousing & 1 & PartialCorr-Adj & +0.000 & n.s. & +0.000 & n.s. \\
+CalHousing & 5 & Uniform & +0.002 & A better & +0.001 & A better \\
+CalHousing & 5 & Pearson-Alloc & -0.000 & n.s. & -0.001 & n.s. \\
+CalHousing & 5 & Pearson-Adj & +0.003 & A better & +0.002 & A better \\
+CalHousing & 5 & PartialCorr-Adj & +0.002 & A better & +0.002 & A better \\
+CalHousing & 10 & Uniform & +0.005 & A better & +0.005 & A better \\
+CalHousing & 10 & Pearson-Alloc & -0.004 & B better & -0.004 & B better \\
+CalHousing & 10 & Pearson-Adj & +0.008 & A better & +0.008 & A better \\
+CalHousing & 10 & PartialCorr-Adj & +0.007 & A better & +0.006 & A better \\
+Appliances & 0.1 & Uniform & +0.018 & n.s. & +0.013 & n.s. \\
+Appliances & 0.1 & Pearson-Alloc & +0.032 & n.s. & +0.000 & n.s. \\
+Appliances & 0.1 & Pearson-Adj & +0.009 & n.s. & +0.002 & n.s. \\
+Appliances & 0.1 & PartialCorr-Adj & -0.006 & n.s. & -0.001 & n.s. \\
+Appliances & 0.3 & Uniform & -0.018 & n.s. & +0.004 & n.s. \\
+Appliances & 0.3 & Pearson-Alloc & -0.042 & n.s. & +0.000 & n.s. \\
+Appliances & 0.3 & Pearson-Adj & -0.004 & n.s. & +0.005 & n.s. \\
+Appliances & 0.3 & PartialCorr-Adj & -0.026 & n.s. & -0.002 & n.s. \\
+Appliances & 0.5 & Uniform & +0.051 & n.s. & -0.001 & n.s. \\
+Appliances & 0.5 & Pearson-Alloc & +0.021 & n.s. & -0.003 & n.s. \\
+Appliances & 0.5 & Pearson-Adj & +0.005 & n.s. & -0.007 & n.s. \\
+Appliances & 0.5 & PartialCorr-Adj & +0.018 & n.s. & -0.004 & n.s. \\
+Appliances & 1 & Uniform & -0.035 & n.s. & -0.007 & n.s. \\
+Appliances & 1 & Pearson-Alloc & -0.007 & n.s. & -0.003 & n.s. \\
+Appliances & 1 & Pearson-Adj & -0.041 & n.s. & -0.008 & n.s. \\
+Appliances & 1 & PartialCorr-Adj & -0.041 & n.s. & +0.004 & n.s. \\
+Appliances & 5 & Uniform & -0.013 & n.s. & +0.001 & n.s. \\
+Appliances & 5 & Pearson-Alloc & +0.016 & n.s. & +0.007 & n.s. \\
+Appliances & 5 & Pearson-Adj & -0.024 & n.s. & +0.006 & n.s. \\
+Appliances & 5 & PartialCorr-Adj & +0.019 & n.s. & +0.015 & n.s. \\
+Appliances & 10 & Uniform & -0.020 & n.s. & -0.017 & n.s. \\
+Appliances & 10 & Pearson-Alloc & +0.041 & n.s. & +0.018 & n.s. \\
+Appliances & 10 & Pearson-Adj & +0.025 & n.s. & +0.020 & n.s. \\
+Appliances & 10 & PartialCorr-Adj & +0.015 & n.s. & +0.014 & n.s. \\
