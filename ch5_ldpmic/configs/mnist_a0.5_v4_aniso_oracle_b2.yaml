@@ -1,0 +1,36 @@
+# mnist_a0.5_v4_aniso_oracle_b2 — pilot v4 of mechanism B (score-weighted anisotropic DP-SGD), NON-PRIVATE ORACLE scores (ceiling, never a private method); beta=2.0, eps1_frac=0.2; FL settings identical to the recorded protocol-v3 local_dpsgd run
+name: mnist_a0.5_v4_aniso_oracle_b2
+dataset: mnist
+partition: dirichlet
+alpha: 0.5
+n_clients: 100
+model: mlp_image
+cache_sanitized: false
+fl:
+  rounds: 100
+  participation: 0.3
+  local_epochs: 1
+  batch_size: 64
+  lr: 0.1
+  clip_update: 18.357        # median DP-SGD update norm, recorded mnist local_dpsgd eps=1 seed 0 (D32)
+  momentum: 0.0
+  eval_every: 1
+clip_grid: [0.25,0.5,1.0]
+seeds: [0]
+eps_grid: [1, 5]
+method:
+  method: aniso_dpsgd
+  delta: 1.0e-5
+  eps1_frac: 0.2
+  allocation: oracle
+  share_mode: exp
+  beta: 2.0
+  floor: 0.05
+  score: fixed_grid
+  G: 10
+  score_sensitivity: analytic
+  sigma0_method: analytic
+  clip_grad: 1.0
+  dpsgd_conversion: balle
+  dpsgd_calibration: schedule
+  score_release: secagg

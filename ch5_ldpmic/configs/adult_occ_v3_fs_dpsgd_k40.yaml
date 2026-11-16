@@ -1,0 +1,34 @@
+# adult_occ_v3_fs_dpsgd_k40 — pilot v3 of mechanism A: secagg score release, schedule DP-SGD calibration, C = median DP-SGD update norm of the recorded eps=1 run (DECISIONS.md D32)
+name: adult_occ_v3_fs_dpsgd_k40
+dataset: adult
+partition: group
+alpha: null
+n_clients: 50
+model: mlp_tabular
+cache_sanitized: false
+fl:
+  rounds: 200
+  participation: 0.2
+  local_epochs: 1
+  batch_size: 128
+  lr: 0.1
+  clip_update: 2.163        # median DP-SGD update norm, recorded adult local_dpsgd eps=1 seed 0 (D32)
+  momentum: 0.0
+  eval_every: 1
+clip_grid: [0.05,0.1,0.2]
+seeds: [0]
+eps_grid: [1, 5]
+method:
+  method: fs_dpsgd
+  k: 40
+  delta: 1.0e-5
+  eps1_frac: 0.2
+  allocation: global
+  score: fixed_grid
+  G: 10
+  score_sensitivity: analytic
+  sigma0_method: analytic
+  clip_grad: 1.0
+  dpsgd_conversion: balle
+  dpsgd_calibration: schedule
+  score_release: secagg

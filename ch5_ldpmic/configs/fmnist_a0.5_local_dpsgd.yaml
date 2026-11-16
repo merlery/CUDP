@@ -1,0 +1,25 @@
+# fmnist_a0.5_local_dpsgd — every run is fully specified by this file + seed (+ eps for private methods).
+name: fmnist_a0.5_local_dpsgd
+dataset: fmnist
+partition: dirichlet
+alpha: 0.5
+n_clients: 100
+model: mlp_image
+cache_sanitized: false    # in-memory only: the on-disk copy would be ~0.4 GB per run (DECISIONS.md D19)
+fl:
+  rounds: 100             # reduced from 200 by the timing protocol (DECISIONS.md D20)
+  participation: 0.3
+  local_epochs: 1
+  batch_size: 64
+  lr: 0.1                 # frozen: nodp 3-value grid {0.01, 0.05, 0.1} on seed 0, T=100 (RUNLOG.md, DECISIONS.md D17)
+  clip_update: null
+  momentum: 0.0
+  eval_every: 1
+lr_grid: [0.01, 0.05, 0.1]
+seeds: [0, 1, 2]        # reduced from 5 seeds by the timing protocol (DECISIONS.md D20)
+eps_grid: [0.5, 1, 2, 5, 10]
+method:
+  method: local_dpsgd
+  delta: 1.0e-5
+  clip_grad: 1.0
+  dpsgd_conversion: balle

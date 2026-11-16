@@ -1,0 +1,23 @@
+# bank_occ_iso — every run is fully specified by this file + seed (+ eps for private methods).
+name: bank_occ_iso
+dataset: bank
+partition: group          # group = by occupation (adult) / job (bank); see DECISIONS.md D13
+alpha: null
+n_clients: 50
+model: mlp_tabular
+fl:
+  rounds: 200
+  participation: 0.2
+  local_epochs: 1
+  batch_size: 128
+  lr: 0.05                # frozen: nodp 3-value grid {0.01, 0.05, 0.1} on seed 0 (RUNLOG.md, DECISIONS.md D17)
+  clip_update: null       # C: utility/stability only, not part of privacy accounting
+  momentum: 0.0
+  eval_every: 1
+lr_grid: [0.01, 0.05, 0.1]
+seeds: [0, 1, 2, 3, 4]
+eps_grid: [0.5, 1, 2, 5, 10]
+method:
+  method: iso
+  delta: 1.0e-5
+  sigma0_method: analytic

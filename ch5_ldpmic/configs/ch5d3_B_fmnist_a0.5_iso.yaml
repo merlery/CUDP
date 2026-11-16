@@ -1,0 +1,32 @@
+# ch5d3_B_fmnist_a0.5_iso — Part B: fmnist_a0.5_iso + input_rescale 0.25 (released coordinate / sqrt(1 + sigma_j^2 / s_j^2))
+name: ch5d3_B_fmnist_a0.5_iso
+dataset: fmnist
+partition: dirichlet
+alpha: 0.5
+n_clients: 100
+model: mlp_image
+cache_sanitized: false
+fl:
+  rounds: 100
+  participation: 0.3
+  local_epochs: 1
+  batch_size: 64
+  lr: 0.1
+  clip_update: null
+  momentum: 0.0
+  eval_every: 1
+seeds:
+- 0
+- 1
+- 2
+eps_grid:
+- 0.5
+- 1
+- 2
+- 5
+- 10
+method:
+  method: iso
+  delta: 1.0e-05
+  sigma0_method: analytic
+  input_rescale: 0.25

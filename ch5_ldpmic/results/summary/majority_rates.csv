@@ -1,0 +1,5 @@
+dataset,n_test,majority_class,majority_rate
+adult,16281,0,0.7637737239727289
+bank,8238,0,0.8873512988589464
+mnist,10000,1,0.1135
+fmnist,10000,0,0.1

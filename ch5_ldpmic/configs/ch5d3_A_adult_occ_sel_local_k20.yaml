@@ -1,0 +1,37 @@
+# ch5d3_A_adult_occ_sel_local_k20 — Part A: adult_occ_v7_sel_mi_k20 with score_release local (every client adds the full noise)
+name: ch5d3_A_adult_occ_sel_local_k20
+dataset: adult
+partition: group
+alpha: null
+n_clients: 50
+model: mlp_tabular
+fl:
+  rounds: 200
+  participation: 0.2
+  local_epochs: 1
+  batch_size: 128
+  lr: 0.1
+  clip_update: 0.2
+  momentum: 0.0
+  eval_every: 1
+seeds:
+- 0
+- 1
+- 2
+- 3
+- 4
+eps_grid:
+- 100
+- 200
+method:
+  method: ldpmic
+  delta: 1.0e-05
+  sigma0_method: analytic
+  eps1_frac: 0.2
+  G: 10
+  score_release: local
+  k: 20
+  share_mode: uniform
+  score: fixed_grid
+  score_sensitivity: analytic
+  allocation: global

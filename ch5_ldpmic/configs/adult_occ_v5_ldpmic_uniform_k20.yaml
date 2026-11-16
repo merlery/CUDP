@@ -1,0 +1,30 @@
+# adult_occ_v5_ldpmic_uniform_k20 — pilot v5 (high-eps record perturbation, CLAUDE.md addendum): selected-uniform control: private top-k selection, uniform shares on the selected set
+name: adult_occ_v5_ldpmic_uniform_k20
+dataset: adult
+partition: group          # by occupation (adult) / job (bank); DECISIONS.md D13
+alpha: null
+n_clients: 50
+model: mlp_tabular
+fl:
+  rounds: 200
+  participation: 0.2
+  local_epochs: 1
+  batch_size: 128
+  lr: 0.1                 # frozen: nodp 3-value grid on seed 0 (DECISIONS.md D17)
+  clip_update: 0.2        # C tuned on nodp, seed 0 (D31 / D36); utility only
+  momentum: 0.0
+  eval_every: 1
+seeds: [0]
+eps_grid: [20, 50, 100, 200]
+method:
+  method: ldpmic
+  delta: 1.0e-5
+  sigma0_method: analytic
+  eps1_frac: 0.2
+  score: fixed_grid
+  G: 10
+  score_sensitivity: analytic
+  score_release: secagg
+  allocation: global
+  share_mode: uniform
+  k: 20

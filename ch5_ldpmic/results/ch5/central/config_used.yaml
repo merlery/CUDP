@@ -1,0 +1,365 @@
+# verbatim copy of config.yaml (fixed before the run), followed by the resolved values
+# Central-on-Privatized baseline (DECISIONS.md D53).  Every choice not fixed by the task
+# is fixed here, before the run.
+dataset: adult
+partition: group            # occupation, 50 clients (as the federated runs)
+seeds: [0, 1, 2, 3, 4]
+model: mlp_tabular          # 2 hidden layers, 64 and 32 units, ReLU
+central_training:
+  optimizer: sgd            # as the federated runs (plain SGD, momentum 0)
+  momentum: 0.0
+  lr_from: non-private federated model of the dataset (adult_occ_nodp: 0.1; bank_occ_nodp: 0.05; D17)
+  batch_size: 128
+  epochs_rule: round(federated_total_steps / ceil(M / 128)); federated_total_steps =
+    sum over rounds t and participants i of local_epochs * ceil(m_i / batch_size), from the recorded
+    participation schedule of the federated run of the same setting and seed
+  step_tolerance: 0.05      # sanity check: |central - federated| / federated <= 5 %
+  shuffling: torch.randperm per epoch, generator seeded by derive_seed(seed, "central")
+  init: build_model after fl.seed_everything(seed), as the federated run
+  early_stopping: none
+  update_clipping: none     # does not apply to central training
+  evaluation: once, after training, on the clean public-scaled test set (restricted to the released
+    features for selected releases); the test set is constructed only after training finishes
+settings:                   # federated reference = the recorded run of the same config, eps, seed
+  all_features_uniform:
+    - {config: configs/adult_occ_iso.yaml, eps: [1, 10]}
+    - {config: configs/adult_occ_v7_iso.yaml, eps: [50, 100, 200]}
+  private_selection_k20:    {config: configs/adult_occ_v7_sel_mi_k20.yaml, eps: [50, 100, 200]}
+  oracle_selection_k20:     {config: configs/adult_occ_v7_sel_mi_oracle_k20.yaml, eps: [50, 100, 200]}
+  central_on_clean:         {federated_reference: configs/adult_occ_nodp.yaml}
+  extension_bank:           {config: configs/bank_occ_v9_sel_k10.yaml, eps: [200]}   # labelled as an extension
+communication:
+  federated_bytes: sum over rounds of bytes_per_client * n_participants (per-round CSV of the federated run)
+  central_bytes: n_records * n_released_features * 4 + phase1_bytes_per_client * n_clients (provenance of the federated run)
+reporting_definitions:      # operational definitions of the D53 reporting rules, fixed before the run
+  within_one_std: "|central_mean - federated_mean| <= federated_std (sample std over the 5 seeds); above / below otherwise"
+  leaves_majority_rate: "mean balanced accuracy over seeds exceeds 0.5 by more than its seed std"
+sanity_reproduce: {config: configs/adult_occ_v7_sel_mi_k20.yaml, eps: 200, seed: 0}
+outputs: results/ch5/central/
+
+resolved:
+  clean/eps=nan/seed=0:
+    central_epochs: 44
+    central_steps: 11220
+    federated_steps: 11225
+    lr: 0.1
+  clean/eps=nan/seed=1:
+    central_epochs: 44
+    central_steps: 11220
+    federated_steps: 11180
+    lr: 0.1
+  clean/eps=nan/seed=2:
+    central_epochs: 44
+    central_steps: 11220
+    federated_steps: 11184
+    lr: 0.1
+  clean/eps=nan/seed=3:
+    central_epochs: 44
+    central_steps: 11220
+    federated_steps: 11261
+    lr: 0.1
+  clean/eps=nan/seed=4:
+    central_epochs: 44
+    central_steps: 11220
+    federated_steps: 11211
+    lr: 0.1
+  all_features/eps=10.0/seed=0:
+    central_epochs: 44
+    central_steps: 11220
+    federated_steps: 11225
+    lr: 0.1
+  all_features/eps=10.0/seed=1:
+    central_epochs: 44
+    central_steps: 11220
+    federated_steps: 11180
+    lr: 0.1
+  all_features/eps=10.0/seed=2:
+    central_epochs: 44
+    central_steps: 11220
+    federated_steps: 11184
+    lr: 0.1
+  all_features/eps=10.0/seed=3:
+    central_epochs: 44
+    central_steps: 11220
+    federated_steps: 11261
+    lr: 0.1
+  all_features/eps=10.0/seed=4:
+    central_epochs: 44
+    central_steps: 11220
+    federated_steps: 11211
+    lr: 0.1
+  all_features/eps=1.0/seed=0:
+    central_epochs: 44
+    central_steps: 11220
+    federated_steps: 11225
+    lr: 0.1
+  all_features/eps=1.0/seed=1:
+    central_epochs: 44
+    central_steps: 11220
+    federated_steps: 11180
+    lr: 0.1
+  all_features/eps=1.0/seed=2:
+    central_epochs: 44
+    central_steps: 11220
+    federated_steps: 11184
+    lr: 0.1
+  all_features/eps=1.0/seed=3:
+    central_epochs: 44
+    central_steps: 11220
+    federated_steps: 11261
+    lr: 0.1
+  all_features/eps=1.0/seed=4:
+    central_epochs: 44
+    central_steps: 11220
+    federated_steps: 11211
+    lr: 0.1
+  all_features/eps=100.0/seed=0:
+    central_epochs: 44
+    central_steps: 11220
+    federated_steps: 11225
+    lr: 0.1
+  all_features/eps=100.0/seed=1:
+    central_epochs: 44
+    central_steps: 11220
+    federated_steps: 11180
+    lr: 0.1
+  all_features/eps=100.0/seed=2:
+    central_epochs: 44
+    central_steps: 11220
+    federated_steps: 11184
+    lr: 0.1
+  all_features/eps=100.0/seed=3:
+    central_epochs: 44
+    central_steps: 11220
+    federated_steps: 11261
+    lr: 0.1
+  all_features/eps=100.0/seed=4:
+    central_epochs: 44
+    central_steps: 11220
+    federated_steps: 11211
+    lr: 0.1
+  all_features/eps=200.0/seed=0:
+    central_epochs: 44
+    central_steps: 11220
+    federated_steps: 11225
+    lr: 0.1
+  all_features/eps=200.0/seed=1:
+    central_epochs: 44
+    central_steps: 11220
+    federated_steps: 11180
+    lr: 0.1
+  all_features/eps=200.0/seed=2:
+    central_epochs: 44
+    central_steps: 11220
+    federated_steps: 11184
+    lr: 0.1
+  all_features/eps=200.0/seed=3:
+    central_epochs: 44
+    central_steps: 11220
+    federated_steps: 11261
+    lr: 0.1
+  all_features/eps=200.0/seed=4:
+    central_epochs: 44
+    central_steps: 11220
+    federated_steps: 11211
+    lr: 0.1
+  all_features/eps=50.0/seed=0:
+    central_epochs: 44
+    central_steps: 11220
+    federated_steps: 11225
+    lr: 0.1
+  all_features/eps=50.0/seed=1:
+    central_epochs: 44
+    central_steps: 11220
+    federated_steps: 11180
+    lr: 0.1
+  all_features/eps=50.0/seed=2:
+    central_epochs: 44
+    central_steps: 11220
+    federated_steps: 11184
+    lr: 0.1
+  all_features/eps=50.0/seed=3:
+    central_epochs: 44
+    central_steps: 11220
+    federated_steps: 11261
+    lr: 0.1
+  all_features/eps=50.0/seed=4:
+    central_epochs: 44
+    central_steps: 11220
+    federated_steps: 11211
+    lr: 0.1
+  private_sel_k20/eps=100.0/seed=0:
+    central_epochs: 44
+    central_steps: 11220
+    federated_steps: 11225
+    lr: 0.1
+  private_sel_k20/eps=100.0/seed=1:
+    central_epochs: 44
+    central_steps: 11220
+    federated_steps: 11180
+    lr: 0.1
+  private_sel_k20/eps=100.0/seed=2:
+    central_epochs: 44
+    central_steps: 11220
+    federated_steps: 11184
+    lr: 0.1
+  private_sel_k20/eps=100.0/seed=3:
+    central_epochs: 44
+    central_steps: 11220
+    federated_steps: 11261
+    lr: 0.1
+  private_sel_k20/eps=100.0/seed=4:
+    central_epochs: 44
+    central_steps: 11220
+    federated_steps: 11211
+    lr: 0.1
+  private_sel_k20/eps=200.0/seed=0:
+    central_epochs: 44
+    central_steps: 11220
+    federated_steps: 11225
+    lr: 0.1
+  private_sel_k20/eps=200.0/seed=1:
+    central_epochs: 44
+    central_steps: 11220
+    federated_steps: 11180
+    lr: 0.1
+  private_sel_k20/eps=200.0/seed=2:
+    central_epochs: 44
+    central_steps: 11220
+    federated_steps: 11184
+    lr: 0.1
+  private_sel_k20/eps=200.0/seed=3:
+    central_epochs: 44
+    central_steps: 11220
+    federated_steps: 11261
+    lr: 0.1
+  private_sel_k20/eps=200.0/seed=4:
+    central_epochs: 44
+    central_steps: 11220
+    federated_steps: 11211
+    lr: 0.1
+  private_sel_k20/eps=50.0/seed=0:
+    central_epochs: 44
+    central_steps: 11220
+    federated_steps: 11225
+    lr: 0.1
+  private_sel_k20/eps=50.0/seed=1:
+    central_epochs: 44
+    central_steps: 11220
+    federated_steps: 11180
+    lr: 0.1
+  private_sel_k20/eps=50.0/seed=2:
+    central_epochs: 44
+    central_steps: 11220
+    federated_steps: 11184
+    lr: 0.1
+  private_sel_k20/eps=50.0/seed=3:
+    central_epochs: 44
+    central_steps: 11220
+    federated_steps: 11261
+    lr: 0.1
+  private_sel_k20/eps=50.0/seed=4:
+    central_epochs: 44
+    central_steps: 11220
+    federated_steps: 11211
+    lr: 0.1
+  oracle_sel_k20/eps=100.0/seed=0:
+    central_epochs: 44
+    central_steps: 11220
+    federated_steps: 11225
+    lr: 0.1
+  oracle_sel_k20/eps=100.0/seed=1:
+    central_epochs: 44
+    central_steps: 11220
+    federated_steps: 11180
+    lr: 0.1
+  oracle_sel_k20/eps=100.0/seed=2:
+    central_epochs: 44
+    central_steps: 11220
+    federated_steps: 11184
+    lr: 0.1
+  oracle_sel_k20/eps=100.0/seed=3:
+    central_epochs: 44
+    central_steps: 11220
+    federated_steps: 11261
+    lr: 0.1
+  oracle_sel_k20/eps=100.0/seed=4:
+    central_epochs: 44
+    central_steps: 11220
+    federated_steps: 11211
+    lr: 0.1
+  oracle_sel_k20/eps=200.0/seed=0:
+    central_epochs: 44
+    central_steps: 11220
+    federated_steps: 11225
+    lr: 0.1
+  oracle_sel_k20/eps=200.0/seed=1:
+    central_epochs: 44
+    central_steps: 11220
+    federated_steps: 11180
+    lr: 0.1
+  oracle_sel_k20/eps=200.0/seed=2:
+    central_epochs: 44
+    central_steps: 11220
+    federated_steps: 11184
+    lr: 0.1
+  oracle_sel_k20/eps=200.0/seed=3:
+    central_epochs: 44
+    central_steps: 11220
+    federated_steps: 11261
+    lr: 0.1
+  oracle_sel_k20/eps=200.0/seed=4:
+    central_epochs: 44
+    central_steps: 11220
+    federated_steps: 11211
+    lr: 0.1
+  oracle_sel_k20/eps=50.0/seed=0:
+    central_epochs: 44
+    central_steps: 11220
+    federated_steps: 11225
+    lr: 0.1
+  oracle_sel_k20/eps=50.0/seed=1:
+    central_epochs: 44
+    central_steps: 11220
+    federated_steps: 11180
+    lr: 0.1
+  oracle_sel_k20/eps=50.0/seed=2:
+    central_epochs: 44
+    central_steps: 11220
+    federated_steps: 11184
+    lr: 0.1
+  oracle_sel_k20/eps=50.0/seed=3:
+    central_epochs: 44
+    central_steps: 11220
+    federated_steps: 11261
+    lr: 0.1
+  oracle_sel_k20/eps=50.0/seed=4:
+    central_epochs: 44
+    central_steps: 11220
+    federated_steps: 11211
+    lr: 0.1
+  ext_bank_private_sel_k10/eps=200.0/seed=0:
+    central_epochs: 44
+    central_steps: 11352
+    federated_steps: 11228
+    lr: 0.05
+  ext_bank_private_sel_k10/eps=200.0/seed=1:
+    central_epochs: 43
+    central_steps: 11094
+    federated_steps: 11221
+    lr: 0.05
+  ext_bank_private_sel_k10/eps=200.0/seed=2:
+    central_epochs: 43
+    central_steps: 11094
+    federated_steps: 11135
+    lr: 0.05
+  ext_bank_private_sel_k10/eps=200.0/seed=3:
+    central_epochs: 43
+    central_steps: 11094
+    federated_steps: 11210
+    lr: 0.05
+  ext_bank_private_sel_k10/eps=200.0/seed=4:
+    central_epochs: 43
+    central_steps: 11094
+    federated_steps: 11221
+    lr: 0.05

@@ -1,0 +1,148 @@
+{
+ "attack": "attribute_inference",
+ "run_id": "adult_occ_v7_sel_mi_k10_eps50_s0_56a3e037",
+ "config": {
+  "name": "adult_occ_v7_sel_mi_k10",
+  "dataset": "adult",
+  "partition": "group",
+  "alpha": null,
+  "n_clients": 50,
+  "model": "mlp_tabular",
+  "fl": {
+   "rounds": 200,
+   "participation": 0.2,
+   "local_epochs": 1,
+   "batch_size": 128,
+   "lr": 0.1,
+   "clip_update": 0.2,
+   "momentum": 0.0,
+   "eval_every": 1
+  },
+  "method": {
+   "method": "ldpmic",
+   "delta": 1e-05,
+   "sigma0_method": "analytic",
+   "eps1_frac": 0.2,
+   "G": 10,
+   "score_release": "secagg",
+   "k": 10,
+   "share_mode": "uniform",
+   "score": "fixed_grid",
+   "score_sensitivity": "analytic",
+   "allocation": "global",
+   "eps": 50.0
+  },
+  "seed": 0
+ },
+ "config_hash": "56a3e037fc80a8d8442c6368e7a3ad341394ee74833c665f53146987731e670f",
+ "seed": 0,
+ "git_commit": "170ab87ac6b44bcdb6776102bc327003d8cbde95-dirty",
+ "host": {
+  "os": "Linux",
+  "os_release": "6.18.44-fc-v310",
+  "machine": "x86_64",
+  "cpu_count": 4,
+  "torch_threads": 2,
+  "python": "3.13.17",
+  "torch": "2.14.1+cu130",
+  "numpy": "2.5.3"
+ },
+ "command": "python scripts/run_attacks.py attribute --configs configs/adult_occ_v7_iso.yaml configs/adult_occ_v9_alloc_b2.yaml configs/adult_occ_v9_alloc_b2_cap.yaml configs/adult_occ_v7_sel_mi_k10.yaml --eps 50 100 200 --attributes sex race --rerun",
+ "start_time": "2026-11-07T23:32:50.861888+00:00",
+ "status": "completed",
+ "matches_fl_run": true,
+ "results": {
+  "sex": {
+   "attribute": "sex",
+   "n_train": 16309,
+   "n_eval": 16252,
+   "n_classes": 2,
+   "majority_accuracy": 0.6692099433915826,
+   "accuracy": 0.6841004184100419,
+   "balanced_accuracy": 0.596161381985674,
+   "raw_accuracy": 0.7915333497415703,
+   "raw_balanced_accuracy": 0.7562921827658978,
+   "snr": {
+    "sex=Female": 1.7809611406498607,
+    "sex=Male": null
+   },
+   "released_features": [
+    0,
+    26,
+    27,
+    29,
+    49,
+    50,
+    51,
+    59,
+    61,
+    63
+   ],
+   "attribute_released": true,
+   "direct_accuracy": 0.830051685946345,
+   "direct_balanced_accuracy": 0.7939133812544878,
+   "all_accuracy": 0.8512798424809255,
+   "all_balanced_accuracy": 0.8217674496816931
+  },
+  "race": {
+   "attribute": "race",
+   "n_train": 16309,
+   "n_eval": 16252,
+   "n_classes": 5,
+   "majority_accuracy": 0.8562638444499139,
+   "accuracy": 0.8562638444499139,
+   "balanced_accuracy": 0.2,
+   "raw_accuracy": 0.8562638444499139,
+   "raw_balanced_accuracy": 0.2,
+   "snr": {
+    "race=White": null,
+    "race=Asian-Pac-Islander": null,
+    "race=Amer-Indian-Eskimo": null,
+    "race=Other": null,
+    "race=Black": null
+   },
+   "released_features": [
+    0,
+    26,
+    27,
+    29,
+    49,
+    50,
+    51,
+    59,
+    61,
+    63
+   ],
+   "attribute_released": false,
+   "direct_accuracy": null,
+   "direct_balanced_accuracy": null,
+   "all_accuracy": 0.8562638444499139,
+   "all_balanced_accuracy": 0.2
+  }
+ },
+ "selected_features": [
+  0,
+  26,
+  27,
+  29,
+  49,
+  50,
+  51,
+  59,
+  61,
+  63
+ ],
+ "privacy": {
+  "private": true,
+  "eps1": 10.0,
+  "eps2": 40.0,
+  "eps_realized": 50.0,
+  "delta_realized": 1e-05,
+  "sigma0": 0.17756017175166922,
+  "score_l1_mean": 15.265916211940537
+ },
+ "sensitive_indices": [],
+ "p_max": null,
+ "end_time": "2026-11-07T23:32:51.618038+00:00",
+ "duration_s": 0.7561675219999415
+}

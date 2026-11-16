@@ -1,0 +1,30 @@
+# adult_occ_ldpmic_oracle — every run is fully specified by this file + seed (+ eps for private methods).
+name: adult_occ_ldpmic_oracle
+dataset: adult
+partition: group          # group = by occupation (adult) / job (bank); see DECISIONS.md D13
+alpha: null
+n_clients: 50
+model: mlp_tabular
+fl:
+  rounds: 200
+  participation: 0.2
+  local_epochs: 1
+  batch_size: 128
+  lr: 0.1                 # frozen: nodp 3-value grid {0.01, 0.05, 0.1} on seed 0 (RUNLOG.md, DECISIONS.md D17)
+  clip_update: null       # C: utility/stability only, not part of privacy accounting
+  momentum: 0.0
+  eval_every: 1
+lr_grid: [0.01, 0.05, 0.1]
+seeds: [0, 1, 2, 3, 4]
+eps_grid: [0.5, 1, 2, 5, 10]   # extended for the allocation ablation A (eps 1, 5 runs predate the extension)
+method:
+  method: ldpmic
+  delta: 1.0e-5
+  eps1_frac: 0.2
+  allocation: oracle
+  share_mode: exp
+  beta: 2.0
+  score: fixed_grid
+  G: 10
+  score_sensitivity: conservative
+  sigma0_method: analytic

@@ -1,0 +1,85 @@
+{
+ "attack": "attribute_inference",
+ "run_id": "bank_occ_v7_iso_eps200_s0_c3bc55a8",
+ "config": {
+  "name": "bank_occ_v7_iso",
+  "dataset": "bank",
+  "partition": "group",
+  "alpha": null,
+  "n_clients": 50,
+  "model": "mlp_tabular",
+  "fl": {
+   "rounds": 200,
+   "participation": 0.2,
+   "local_epochs": 1,
+   "batch_size": 128,
+   "lr": 0.05,
+   "clip_update": 0.05,
+   "momentum": 0.0,
+   "eval_every": 1
+  },
+  "method": {
+   "method": "iso",
+   "delta": 1e-05,
+   "sigma0_method": "analytic",
+   "eps": 200.0
+  },
+  "seed": 0
+ },
+ "config_hash": "c3bc55a88ea6027bcc03d14e10e9d7729600949c75476c8cb42cc67e4504398a",
+ "seed": 0,
+ "git_commit": "2cc2be02614c20751489ece7f5713142d3fe674c-dirty",
+ "host": {
+  "os": "Linux",
+  "os_release": "6.18.44-fc-v310",
+  "machine": "x86_64",
+  "cpu_count": 4,
+  "torch_threads": 2,
+  "python": "3.13.17",
+  "torch": "2.14.1+cu130",
+  "numpy": "2.5.3"
+ },
+ "command": "python scripts/run_attacks.py attribute --configs configs/bank_occ_v7_iso.yaml --eps 50 100 200 --attributes marital",
+ "start_time": "2026-11-08T00:14:03.416451+00:00",
+ "status": "completed",
+ "matches_fl_run": true,
+ "results": {
+  "marital": {
+   "attribute": "marital",
+   "n_train": 16290,
+   "n_eval": 16660,
+   "n_classes": 4,
+   "majority_accuracy": 0.5994597839135655,
+   "accuracy": 0.6000600240096038,
+   "balanced_accuracy": 0.2624797047207882,
+   "raw_accuracy": 0.6669867947178871,
+   "raw_balanced_accuracy": 0.34304940934661243,
+   "snr": {
+    "marital=divorced": 2.0128511000653195,
+    "marital=married": 2.0128511000653195,
+    "marital=single": 2.0128511000653195,
+    "marital=unknown": 2.0128511000653195
+   },
+   "released_features": null,
+   "attribute_released": true,
+   "direct_accuracy": 0.8889555822328932,
+   "direct_balanced_accuracy": 0.6327003962911744,
+   "all_accuracy": 0.8879351740696279,
+   "all_balanced_accuracy": 0.6375507346744199
+  }
+ },
+ "selected_features": [],
+ "privacy": {
+  "private": true,
+  "eps1": 0.0,
+  "eps2": 200.0,
+  "eps_realized": 200.0,
+  "delta_realized": 1e-05,
+  "sigma0": 0.061621415804270545,
+  "score_l1_mean": NaN
+ },
+ "sensitive_indices": [],
+ "p_max": null,
+ "end_time": "2026-11-08T00:14:06.875526+00:00",
+ "duration_s": 3.4590790610000113
+}

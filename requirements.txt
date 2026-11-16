@@ -1,0 +1,16 @@
+# Pinned dependencies of the dissertation code (CPU only). Install with
+#   pip install --extra-index-url https://download.pytorch.org/whl/cpu -r requirements.txt
+# (the extra index gives the small CPU-only PyTorch wheel; PyPI's default Linux wheel bundles CUDA).
+# Python 3.13.
+#
+# Chapter 5 (ch5_ldpmic/):
+numpy==2.5.3
+scipy==1.18.1
+pandas==3.0.5
+scikit-learn==1.9.1
+PyYAML==6.0.3
+torch==2.14.1
+torchvision==0.29.1
+opacus==1.6.0
+matplotlib==3.11.2
+pytest==9.1.1

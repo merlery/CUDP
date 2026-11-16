@@ -1,0 +1,35 @@
+# mnist_a0.5_v8_fs_mi50_k400 — pilot v8 (cost of the input filter, CLAUDE.md addendum 2026-10-29c): MI-private top-400, eps1 share 0.5
+name: mnist_a0.5_v8_fs_mi50_k400
+dataset: mnist
+partition: dirichlet
+alpha: 0.5
+n_clients: 100
+model: mlp_image
+cache_sanitized: false
+fl:
+  rounds: 100
+  participation: 0.3
+  local_epochs: 1
+  batch_size: 64
+  lr: 0.1
+  clip_update: 18.357        # median DP-SGD update norm, recorded mnist local_dpsgd eps=1 seed 0 (D32)
+  momentum: 0.0
+  eval_every: 1
+clip_grid: [0.25,0.5,1.0]
+seeds: [0, 1, 2]
+eps_grid: [1]
+method:
+  method: fs_dpsgd
+  k: 400
+  selection: top_k
+  delta: 1.0e-5
+  eps1_frac: 0.5
+  allocation: global
+  score: fixed_grid
+  G: 10
+  score_sensitivity: analytic
+  sigma0_method: analytic
+  clip_grad: 1.0
+  dpsgd_conversion: balle
+  dpsgd_calibration: schedule
+  score_release: secagg

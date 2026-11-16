@@ -1,0 +1,107 @@
+{
+ "attack": "attribute_inference",
+ "run_id": "adult_occ_v7_iso_eps50_s4_61a96506",
+ "config": {
+  "name": "adult_occ_v7_iso",
+  "dataset": "adult",
+  "partition": "group",
+  "alpha": null,
+  "n_clients": 50,
+  "model": "mlp_tabular",
+  "fl": {
+   "rounds": 200,
+   "participation": 0.2,
+   "local_epochs": 1,
+   "batch_size": 128,
+   "lr": 0.1,
+   "clip_update": 0.2,
+   "momentum": 0.0,
+   "eval_every": 1
+  },
+  "method": {
+   "method": "iso",
+   "delta": 1e-05,
+   "sigma0_method": "analytic",
+   "eps": 50.0
+  },
+  "seed": 4
+ },
+ "config_hash": "61a9650650b0dfa6483d6d0ecefa1e7be52d4d8151cd15cb0d9b8c528878c6a0",
+ "seed": 4,
+ "git_commit": "170ab87ac6b44bcdb6776102bc327003d8cbde95-dirty",
+ "host": {
+  "os": "Linux",
+  "os_release": "6.18.44-fc-v310",
+  "machine": "x86_64",
+  "cpu_count": 4,
+  "torch_threads": 2,
+  "python": "3.13.17",
+  "torch": "2.14.1+cu130",
+  "numpy": "2.5.3"
+ },
+ "command": "python scripts/run_attacks.py attribute --configs configs/adult_occ_v7_iso.yaml configs/adult_occ_v9_alloc_b2.yaml configs/adult_occ_v9_alloc_b2_cap.yaml configs/adult_occ_v7_sel_mi_k10.yaml --eps 50 100 200 --attributes sex race --rerun",
+ "start_time": "2026-11-07T23:31:27.631167+00:00",
+ "status": "completed",
+ "matches_fl_run": true,
+ "results": {
+  "sex": {
+   "attribute": "sex",
+   "n_train": 15891,
+   "n_eval": 16670,
+   "n_classes": 2,
+   "majority_accuracy": 0.6101979604079184,
+   "accuracy": 0.6164967006598681,
+   "balanced_accuracy": 0.517334215301069,
+   "raw_accuracy": 0.8232153569286143,
+   "raw_balanced_accuracy": 0.8196231194643271,
+   "snr": {
+    "sex=Female": 0.6516400332785914,
+    "sex=Male": 0.6516400332785914
+   },
+   "released_features": null,
+   "attribute_released": true,
+   "direct_accuracy": 0.676124775044991,
+   "direct_balanced_accuracy": 0.6007395481618893,
+   "all_accuracy": 0.6968206358728254,
+   "all_balanced_accuracy": 0.6330391655643582
+  },
+  "race": {
+   "attribute": "race",
+   "n_train": 15891,
+   "n_eval": 16670,
+   "n_classes": 5,
+   "majority_accuracy": 0.8470905818836233,
+   "accuracy": 0.8470905818836233,
+   "balanced_accuracy": 0.2,
+   "raw_accuracy": 0.8705458908218356,
+   "raw_balanced_accuracy": 0.34276218828114535,
+   "snr": {
+    "race=White": 0.6516400332785914,
+    "race=Asian-Pac-Islander": 0.6516400332785914,
+    "race=Amer-Indian-Eskimo": 0.6516400332785914,
+    "race=Other": 0.6516400332785914,
+    "race=Black": 0.6516400332785914
+   },
+   "released_features": null,
+   "attribute_released": true,
+   "direct_accuracy": 0.8474505098980204,
+   "direct_balanced_accuracy": 0.20401692164281832,
+   "all_accuracy": 0.8461307738452309,
+   "all_balanced_accuracy": 0.20707314257624182
+  }
+ },
+ "selected_features": [],
+ "privacy": {
+  "private": true,
+  "eps1": 0.0,
+  "eps2": 50.0,
+  "eps_realized": 50.0,
+  "delta_realized": 1e-05,
+  "sigma0": 0.14976060756097118,
+  "score_l1_mean": NaN
+ },
+ "sensitive_indices": [],
+ "p_max": null,
+ "end_time": "2026-11-07T23:31:31.964308+00:00",
+ "duration_s": 4.333139671000026
+}

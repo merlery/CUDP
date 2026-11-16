@@ -1,0 +1,36 @@
+# adult_occ_v4_aniso_oracle_b50 — pilot v4 of mechanism B (score-weighted anisotropic DP-SGD), NON-PRIVATE ORACLE scores (ceiling, never a private method); beta=50.0, eps1_frac=0.2; FL settings identical to the recorded protocol-v3 local_dpsgd run
+name: adult_occ_v4_aniso_oracle_b50
+dataset: adult
+partition: group
+alpha: null
+n_clients: 50
+model: mlp_tabular
+cache_sanitized: false
+fl:
+  rounds: 200
+  participation: 0.2
+  local_epochs: 1
+  batch_size: 128
+  lr: 0.1
+  clip_update: 2.163        # median DP-SGD update norm, recorded adult local_dpsgd eps=1 seed 0 (D32)
+  momentum: 0.0
+  eval_every: 1
+clip_grid: [0.05,0.1,0.2]
+seeds: [0]
+eps_grid: [1]
+method:
+  method: aniso_dpsgd
+  delta: 1.0e-5
+  eps1_frac: 0.2
+  allocation: oracle
+  share_mode: exp
+  beta: 50.0
+  floor: 0.05
+  score: fixed_grid
+  G: 10
+  score_sensitivity: analytic
+  sigma0_method: analytic
+  clip_grad: 1.0
+  dpsgd_conversion: balle
+  dpsgd_calibration: schedule
+  score_release: secagg

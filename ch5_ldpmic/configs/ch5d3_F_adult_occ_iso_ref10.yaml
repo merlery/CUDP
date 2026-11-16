@@ -1,0 +1,28 @@
+# ch5d3_F_adult_occ_iso_ref10 — Part F reference: adult_occ_v7_iso at eps = 10 (the stored v7 grid starts at 20); same protocol
+name: ch5d3_F_adult_occ_iso_ref10
+dataset: adult
+partition: group
+alpha: null
+n_clients: 50
+model: mlp_tabular
+fl:
+  rounds: 200
+  participation: 0.2
+  local_epochs: 1
+  batch_size: 128
+  lr: 0.1
+  clip_update: 0.2
+  momentum: 0.0
+  eval_every: 1
+seeds:
+- 0
+- 1
+- 2
+- 3
+- 4
+eps_grid:
+- 10
+method:
+  method: iso
+  delta: 1.0e-05
+  sigma0_method: analytic

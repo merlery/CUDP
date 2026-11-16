@@ -1,0 +1,30 @@
+# bank_occ_v5_ldpmic_oracle — pilot v5 (high-eps record perturbation, CLAUDE.md addendum): NON-PRIVATE oracle scores (ceiling, never a private method)
+name: bank_occ_v5_ldpmic_oracle
+dataset: bank
+partition: group          # by occupation (adult) / job (bank); DECISIONS.md D13
+alpha: null
+n_clients: 50
+model: mlp_tabular
+fl:
+  rounds: 200
+  participation: 0.2
+  local_epochs: 1
+  batch_size: 128
+  lr: 0.05                 # frozen: nodp 3-value grid on seed 0 (DECISIONS.md D17)
+  clip_update: 0.05        # C tuned on nodp, seed 0 (D31 / D36); utility only
+  momentum: 0.0
+  eval_every: 1
+seeds: [0]
+eps_grid: [20, 50, 100, 200]
+method:
+  method: ldpmic
+  delta: 1.0e-5
+  sigma0_method: analytic
+  eps1_frac: 0.2
+  score: fixed_grid
+  G: 10
+  score_sensitivity: analytic
+  score_release: secagg
+  allocation: oracle
+  share_mode: exp
+  beta: 2.0

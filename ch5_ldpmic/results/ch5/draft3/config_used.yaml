@@ -1,0 +1,950 @@
+config:
+  outputs: results/ch5/draft3/
+  mapping_to_stored_results:
+    experiment_1: '{adult_occ, bank_occ, mnist_a0.5, fmnist_a0.5}_{iso, ldpmic_global,
+      ldpmic_oracle}; eps 0.5, 1, 2, 5, 10 (oracle on the image sets: 1, 5 only, as
+      stored); seeds 0-4 tabular, 0-2 images; no update clipping'
+    experiment_3: adult_occ_v7_sel_mi_k{10,20} (private selection, secure aggregation),
+      adult_occ_v7_sel_random_k{10,20}, adult_occ_v7_sel_mi_oracle_k{10,20}; seeds
+      0-4
+    table_5_2_local_dpsgd: '{mnist, fmnist}_a0.5_local_dpsgd (no update clipping)'
+    masking_table_full_input: '{mnist, fmnist}_a0.5_v8_local_dpsgd (update clipping
+      18.357 / 18.356)'
+    gradient_domain_pilots: adult_occ_v3_fs_dpsgd_k*, mnist_a0.5_v3_fs_dpsgd_k* at
+      eps = 1 (recorded sigma_s)
+  generated_configs: scripts/ch5d3_gen_configs.py
+  run_command: scripts/run_sweep.py <config> --eps <e> --seeds <s> --results results/ch5/draft3/runs
+    --record-norms; one job per run, 4 parallel workers, OMP_NUM_THREADS=1
+  part_A:
+    configs:
+    - ch5d3_A_adult_occ_sel_local_k10
+    - ch5d3_A_adult_occ_sel_local_k20
+    change: 'score_release: local (code path pipeline._phase1_scores -> scores.privatize_scores);
+      everything else as adult_occ_v7_sel_mi_k*'
+    eps:
+    - 100
+    - 200
+    seeds:
+    - 0
+    - 1
+    - 2
+    - 3
+    - 4
+    local_mode_as_implemented: client i adds N(0, sigma_i^2 I), sigma_i = sqrt(d)
+      * Delta_s(n_i) * c(eps1, delta1), clips its noisy vector to [0, 1] (the mechanism
+      specification), and the server takes the n_i-weighted average
+    score_sensitivity: analytic bound of the code (scores.score_sensitivity, entropy-continuity
+      bound); the task's Delta_FG(m) = 3 (1 + ln m) / (m ln 2) is printed next to
+      it in Part D and in the Part A noise table
+    noise_std_on_average: 'sqrt(sum_i w_i^2 sigma_i^2), w_i = n_i / sum n (before
+      the per-client clipping); secure aggregation: the recorded sigma_s'
+    exact_scores: n_i-weighted average of the clients' exact score vectors (score_raw_global);
+      largest and k-th largest entry
+    overlap: '|private top-k set intersect exact top-k set|, per seed; additionally
+      the overlap the unclipped average would give (diagnostic, no training)'
+    references: 'stored runs of the same seed: adult_occ_v7_sel_mi_k*, adult_occ_v7_sel_random_k*,
+      adult_occ_v7_sel_mi_oracle_k*'
+    mnist_noise_table: eps in {1, 5}, eps1 = 0.2 eps, delta1 = 5e-6, seed 0 partition
+      (alpha 0.5, 100 clients), both modes, no training
+  part_B:
+    failed_numerically: 'the stored flag `diverged`: a non-finite parameter or a non-finite
+      training loss in any round (scripts/run_sweep.py); for runs that predate the
+      flag it is recomputed from the per-round CSV (non-finite train_loss)'
+    also_reported: seeds whose final model predicts a single class on the whole test
+      set (from the confusion matrix)
+    stored_confusion_matrices: the stored runs did not save the model; for the binary
+      Adult task the confusion matrix is recovered exactly from the stored accuracy,
+      balanced accuracy and the test class counts (two equations, two unknowns; integer
+      check)
+    mean_abs_input: 'mean absolute value of the training inputs as they enter the
+      network, pooled over clients; stored runs: recomputed by re-running Phase 1-3
+      only (no training) and checking the SHA-256 of the released arrays where stored;
+      new runs: recorded by the run'
+    rescaling:
+      rule: released coordinate (after the public affine map to [0, 1]) divided by
+        sqrt(1 + (sigma_j / Delta_j)^2 / s_j^2)
+      s_j: 0.25
+      centering: none
+      test_features: divided by the same map, with the n_i-weighted mean over clients
+        of (sigma_ij / Delta_j)^2 (identical to the training map for uniform and global
+        allocations; oracle allocation has per-client sigma)
+    configs: 'ch5d3_B_<stored config name>; method.input_rescale: 0.25; nothing else
+      changed (no update clipping, same lr, seeds, budgets)'
+    lr_repeat_trigger: if any rescaled run of a dataset has diverged = true, all Part
+      B runs of that dataset are repeated once with lr / 10 (ch5d3_Blr_*) and both
+      are reported
+    sanity: 'SHA-256 of every released client array equals the stored Experiment 1
+      run of the same config, eps and seed (tabular: stored per client; images: not
+      stored, not checkable)'
+  part_C:
+    rule: C(eps) = median over rounds of the per-round mean update norm of the stored
+      local_dpsgd run without update clipping at that eps, seed 0, rounded to 3 decimals
+      (the D32 rule applied per budget). The rule reads training-side norms of one
+      seed and no test metric; it is test-free, not data-independent in the strict
+      sense.
+    clip_update:
+      mnist:
+        0.5: 34.457
+        1: 18.357
+        2: 9.961
+        5: 4.765
+        10: 2.998
+      fmnist:
+        0.5: 34.457
+        1: 18.356
+        2: 9.963
+        5: 4.764
+        10: 2.996
+    eps_1: the rule gives exactly the stored C; the stored {mnist, fmnist}_a0.5_v8_local_dpsgd
+      eps = 1 runs are reused, not rerun
+    new_runs: ch5d3_C_{mnist,fmnist}_a0.5_local_dpsgd_e{0.5,2,5,10}, seeds 0-2, otherwise
+      identical to *_v8_local_dpsgd (schedule calibration, C_g = 1)
+    versions_reported:
+    - stored, no update clipping (Table 5.2; 5 budgets)
+    - stored, fixed C from eps = 1 (masking table; eps 1 and 5)
+    - new, C chosen per budget
+    fraction_clipped: 'new runs: share of participant updates whose norm exceeds C
+      (per-update norms recorded); stored runs: per-update norms were not stored,
+      the share of rounds whose mean norm exceeds C is reported instead and labelled
+      as such'
+  part_D:
+    pilots: adult_occ_v3_fs_dpsgd_k10 and mnist_a0.5_v3_fs_dpsgd_k100, eps = 1, seed
+      0
+    printed: d, client sizes, eps1, delta1, c, the score normalizer ln(min(G, n_classes)),
+      the task formula, the code value, the recorded value
+  part_E:
+    source: stored adult_occ_v7_sel_mi_k* and adult_occ_v7_sel_random_k*, eps 100
+      and 200, seeds 0-4; no new runs, no test
+  part_F:
+    configs:
+    - ch5d3_F_adult_occ_iso_group
+    - ch5d3_F_adult_occ_iso_ref10
+    calibration: sigma_j = Delta_j * c(eps, delta) * sqrt(n_numeric + 2 n_categorical)
+      for every j; group structure read from the public feature names (name=value
+      columns)
+    protocol: adult_occ_v7_iso (update clipping 0.2); eps 10 is not in the stored
+      v7 grid, so the uniform reference at eps 10 is run under the same protocol (ch5d3_F_adult_occ_iso_ref10);
+      the stored adult_occ_iso eps 10 (no update clipping) is shown as well
+    validity: requires every record to be a valid one-hot encoding; coordinate-wise
+      clipping does not enforce this, so a client must validate/project its records
+      first (true by construction for the loader's records)
+  reporting: numbers as recorded, mean and sample std (ddof 1) over seeds; no interpretation
+    beyond them
+resolved_configs:
+  ch5d3_A_adult_occ_sel_local_k10:
+    name: ch5d3_A_adult_occ_sel_local_k10
+    dataset: adult
+    partition: group
+    alpha: null
+    n_clients: 50
+    model: mlp_tabular
+    fl:
+      rounds: 200
+      participation: 0.2
+      local_epochs: 1
+      batch_size: 128
+      lr: 0.1
+      clip_update: 0.2
+      momentum: 0.0
+      eval_every: 1
+    seeds:
+    - 0
+    - 1
+    - 2
+    - 3
+    - 4
+    eps_grid:
+    - 100
+    - 200
+    method:
+      method: ldpmic
+      delta: 1.0e-05
+      sigma0_method: analytic
+      eps1_frac: 0.2
+      G: 10
+      score_release: local
+      k: 10
+      share_mode: uniform
+      score: fixed_grid
+      score_sensitivity: analytic
+      allocation: global
+  ch5d3_A_adult_occ_sel_local_k20:
+    name: ch5d3_A_adult_occ_sel_local_k20
+    dataset: adult
+    partition: group
+    alpha: null
+    n_clients: 50
+    model: mlp_tabular
+    fl:
+      rounds: 200
+      participation: 0.2
+      local_epochs: 1
+      batch_size: 128
+      lr: 0.1
+      clip_update: 0.2
+      momentum: 0.0
+      eval_every: 1
+    seeds:
+    - 0
+    - 1
+    - 2
+    - 3
+    - 4
+    eps_grid:
+    - 100
+    - 200
+    method:
+      method: ldpmic
+      delta: 1.0e-05
+      sigma0_method: analytic
+      eps1_frac: 0.2
+      G: 10
+      score_release: local
+      k: 20
+      share_mode: uniform
+      score: fixed_grid
+      score_sensitivity: analytic
+      allocation: global
+  ch5d3_B_adult_occ_iso:
+    name: ch5d3_B_adult_occ_iso
+    dataset: adult
+    partition: group
+    alpha: null
+    n_clients: 50
+    model: mlp_tabular
+    fl:
+      rounds: 200
+      participation: 0.2
+      local_epochs: 1
+      batch_size: 128
+      lr: 0.1
+      clip_update: null
+      momentum: 0.0
+      eval_every: 1
+    seeds:
+    - 0
+    - 1
+    - 2
+    - 3
+    - 4
+    eps_grid:
+    - 0.5
+    - 1
+    - 2
+    - 5
+    - 10
+    method:
+      method: iso
+      delta: 1.0e-05
+      sigma0_method: analytic
+      input_rescale: 0.25
+  ch5d3_B_adult_occ_ldpmic_global:
+    name: ch5d3_B_adult_occ_ldpmic_global
+    dataset: adult
+    partition: group
+    alpha: null
+    n_clients: 50
+    model: mlp_tabular
+    fl:
+      rounds: 200
+      participation: 0.2
+      local_epochs: 1
+      batch_size: 128
+      lr: 0.1
+      clip_update: null
+      momentum: 0.0
+      eval_every: 1
+    seeds:
+    - 0
+    - 1
+    - 2
+    - 3
+    - 4
+    eps_grid:
+    - 0.5
+    - 1
+    - 2
+    - 5
+    - 10
+    method:
+      method: ldpmic
+      delta: 1.0e-05
+      eps1_frac: 0.2
+      allocation: global
+      share_mode: exp
+      beta: 2.0
+      score: fixed_grid
+      G: 10
+      score_sensitivity: conservative
+      sigma0_method: analytic
+      input_rescale: 0.25
+  ch5d3_B_adult_occ_ldpmic_oracle:
+    name: ch5d3_B_adult_occ_ldpmic_oracle
+    dataset: adult
+    partition: group
+    alpha: null
+    n_clients: 50
+    model: mlp_tabular
+    fl:
+      rounds: 200
+      participation: 0.2
+      local_epochs: 1
+      batch_size: 128
+      lr: 0.1
+      clip_update: null
+      momentum: 0.0
+      eval_every: 1
+    seeds:
+    - 0
+    - 1
+    - 2
+    - 3
+    - 4
+    eps_grid:
+    - 0.5
+    - 1
+    - 2
+    - 5
+    - 10
+    method:
+      method: ldpmic
+      delta: 1.0e-05
+      eps1_frac: 0.2
+      allocation: oracle
+      share_mode: exp
+      beta: 2.0
+      score: fixed_grid
+      G: 10
+      score_sensitivity: conservative
+      sigma0_method: analytic
+      input_rescale: 0.25
+  ch5d3_B_bank_occ_iso:
+    name: ch5d3_B_bank_occ_iso
+    dataset: bank
+    partition: group
+    alpha: null
+    n_clients: 50
+    model: mlp_tabular
+    fl:
+      rounds: 200
+      participation: 0.2
+      local_epochs: 1
+      batch_size: 128
+      lr: 0.05
+      clip_update: null
+      momentum: 0.0
+      eval_every: 1
+    seeds:
+    - 0
+    - 1
+    - 2
+    - 3
+    - 4
+    eps_grid:
+    - 0.5
+    - 1
+    - 2
+    - 5
+    - 10
+    method:
+      method: iso
+      delta: 1.0e-05
+      sigma0_method: analytic
+      input_rescale: 0.25
+  ch5d3_B_bank_occ_ldpmic_global:
+    name: ch5d3_B_bank_occ_ldpmic_global
+    dataset: bank
+    partition: group
+    alpha: null
+    n_clients: 50
+    model: mlp_tabular
+    fl:
+      rounds: 200
+      participation: 0.2
+      local_epochs: 1
+      batch_size: 128
+      lr: 0.05
+      clip_update: null
+      momentum: 0.0
+      eval_every: 1
+    seeds:
+    - 0
+    - 1
+    - 2
+    - 3
+    - 4
+    eps_grid:
+    - 0.5
+    - 1
+    - 2
+    - 5
+    - 10
+    method:
+      method: ldpmic
+      delta: 1.0e-05
+      eps1_frac: 0.2
+      allocation: global
+      share_mode: exp
+      beta: 2.0
+      score: fixed_grid
+      G: 10
+      score_sensitivity: conservative
+      sigma0_method: analytic
+      input_rescale: 0.25
+  ch5d3_B_bank_occ_ldpmic_oracle:
+    name: ch5d3_B_bank_occ_ldpmic_oracle
+    dataset: bank
+    partition: group
+    alpha: null
+    n_clients: 50
+    model: mlp_tabular
+    fl:
+      rounds: 200
+      participation: 0.2
+      local_epochs: 1
+      batch_size: 128
+      lr: 0.05
+      clip_update: null
+      momentum: 0.0
+      eval_every: 1
+    seeds:
+    - 0
+    - 1
+    - 2
+    - 3
+    - 4
+    eps_grid:
+    - 0.5
+    - 1
+    - 2
+    - 5
+    - 10
+    method:
+      method: ldpmic
+      delta: 1.0e-05
+      eps1_frac: 0.2
+      allocation: oracle
+      share_mode: exp
+      beta: 2.0
+      score: fixed_grid
+      G: 10
+      score_sensitivity: conservative
+      sigma0_method: analytic
+      input_rescale: 0.25
+  ch5d3_B_fmnist_a0.5_iso:
+    name: ch5d3_B_fmnist_a0.5_iso
+    dataset: fmnist
+    partition: dirichlet
+    alpha: 0.5
+    n_clients: 100
+    model: mlp_image
+    cache_sanitized: false
+    fl:
+      rounds: 100
+      participation: 0.3
+      local_epochs: 1
+      batch_size: 64
+      lr: 0.1
+      clip_update: null
+      momentum: 0.0
+      eval_every: 1
+    seeds:
+    - 0
+    - 1
+    - 2
+    eps_grid:
+    - 0.5
+    - 1
+    - 2
+    - 5
+    - 10
+    method:
+      method: iso
+      delta: 1.0e-05
+      sigma0_method: analytic
+      input_rescale: 0.25
+  ch5d3_B_fmnist_a0.5_ldpmic_global:
+    name: ch5d3_B_fmnist_a0.5_ldpmic_global
+    dataset: fmnist
+    partition: dirichlet
+    alpha: 0.5
+    n_clients: 100
+    model: mlp_image
+    cache_sanitized: false
+    fl:
+      rounds: 100
+      participation: 0.3
+      local_epochs: 1
+      batch_size: 64
+      lr: 0.1
+      clip_update: null
+      momentum: 0.0
+      eval_every: 1
+    seeds:
+    - 0
+    - 1
+    - 2
+    eps_grid:
+    - 0.5
+    - 1
+    - 2
+    - 5
+    - 10
+    method:
+      method: ldpmic
+      delta: 1.0e-05
+      eps1_frac: 0.2
+      allocation: global
+      share_mode: exp
+      beta: 2.0
+      score: fixed_grid
+      G: 10
+      score_sensitivity: conservative
+      sigma0_method: analytic
+      input_rescale: 0.25
+  ch5d3_B_fmnist_a0.5_ldpmic_oracle:
+    name: ch5d3_B_fmnist_a0.5_ldpmic_oracle
+    dataset: fmnist
+    partition: dirichlet
+    alpha: 0.5
+    n_clients: 100
+    model: mlp_image
+    cache_sanitized: false
+    fl:
+      rounds: 100
+      participation: 0.3
+      local_epochs: 1
+      batch_size: 64
+      lr: 0.1
+      clip_update: null
+      momentum: 0.0
+      eval_every: 1
+    seeds:
+    - 0
+    - 1
+    - 2
+    eps_grid:
+    - 1
+    - 5
+    method:
+      method: ldpmic
+      delta: 1.0e-05
+      eps1_frac: 0.2
+      allocation: oracle
+      share_mode: exp
+      beta: 2.0
+      score: fixed_grid
+      G: 10
+      score_sensitivity: conservative
+      sigma0_method: analytic
+      input_rescale: 0.25
+  ch5d3_B_mnist_a0.5_iso:
+    name: ch5d3_B_mnist_a0.5_iso
+    dataset: mnist
+    partition: dirichlet
+    alpha: 0.5
+    n_clients: 100
+    model: mlp_image
+    cache_sanitized: false
+    fl:
+      rounds: 100
+      participation: 0.3
+      local_epochs: 1
+      batch_size: 64
+      lr: 0.1
+      clip_update: null
+      momentum: 0.0
+      eval_every: 1
+    seeds:
+    - 0
+    - 1
+    - 2
+    eps_grid:
+    - 0.5
+    - 1
+    - 2
+    - 5
+    - 10
+    method:
+      method: iso
+      delta: 1.0e-05
+      sigma0_method: analytic
+      input_rescale: 0.25
+  ch5d3_B_mnist_a0.5_ldpmic_global:
+    name: ch5d3_B_mnist_a0.5_ldpmic_global
+    dataset: mnist
+    partition: dirichlet
+    alpha: 0.5
+    n_clients: 100
+    model: mlp_image
+    cache_sanitized: false
+    fl:
+      rounds: 100
+      participation: 0.3
+      local_epochs: 1
+      batch_size: 64
+      lr: 0.1
+      clip_update: null
+      momentum: 0.0
+      eval_every: 1
+    seeds:
+    - 0
+    - 1
+    - 2
+    eps_grid:
+    - 0.5
+    - 1
+    - 2
+    - 5
+    - 10
+    method:
+      method: ldpmic
+      delta: 1.0e-05
+      eps1_frac: 0.2
+      allocation: global
+      share_mode: exp
+      beta: 2.0
+      score: fixed_grid
+      G: 10
+      score_sensitivity: conservative
+      sigma0_method: analytic
+      input_rescale: 0.25
+  ch5d3_B_mnist_a0.5_ldpmic_oracle:
+    name: ch5d3_B_mnist_a0.5_ldpmic_oracle
+    dataset: mnist
+    partition: dirichlet
+    alpha: 0.5
+    n_clients: 100
+    model: mlp_image
+    cache_sanitized: false
+    fl:
+      rounds: 100
+      participation: 0.3
+      local_epochs: 1
+      batch_size: 64
+      lr: 0.1
+      clip_update: null
+      momentum: 0.0
+      eval_every: 1
+    seeds:
+    - 0
+    - 1
+    - 2
+    eps_grid:
+    - 1
+    - 5
+    method:
+      method: ldpmic
+      delta: 1.0e-05
+      eps1_frac: 0.2
+      allocation: oracle
+      share_mode: exp
+      beta: 2.0
+      score: fixed_grid
+      G: 10
+      score_sensitivity: conservative
+      sigma0_method: analytic
+      input_rescale: 0.25
+  ch5d3_C_fmnist_a0.5_local_dpsgd_e0.5:
+    name: ch5d3_C_fmnist_a0.5_local_dpsgd_e0.5
+    dataset: fmnist
+    partition: dirichlet
+    alpha: 0.5
+    n_clients: 100
+    model: mlp_image
+    cache_sanitized: false
+    fl:
+      rounds: 100
+      participation: 0.3
+      local_epochs: 1
+      batch_size: 64
+      lr: 0.1
+      clip_update: 34.457
+      momentum: 0.0
+      eval_every: 1
+    seeds:
+    - 0
+    - 1
+    - 2
+    eps_grid:
+    - 0.5
+    method:
+      method: local_dpsgd
+      delta: 1.0e-05
+      clip_grad: 1.0
+      dpsgd_conversion: balle
+      dpsgd_calibration: schedule
+  ch5d3_C_fmnist_a0.5_local_dpsgd_e10:
+    name: ch5d3_C_fmnist_a0.5_local_dpsgd_e10
+    dataset: fmnist
+    partition: dirichlet
+    alpha: 0.5
+    n_clients: 100
+    model: mlp_image
+    cache_sanitized: false
+    fl:
+      rounds: 100
+      participation: 0.3
+      local_epochs: 1
+      batch_size: 64
+      lr: 0.1
+      clip_update: 2.996
+      momentum: 0.0
+      eval_every: 1
+    seeds:
+    - 0
+    - 1
+    - 2
+    eps_grid:
+    - 10
+    method:
+      method: local_dpsgd
+      delta: 1.0e-05
+      clip_grad: 1.0
+      dpsgd_conversion: balle
+      dpsgd_calibration: schedule
+  ch5d3_C_fmnist_a0.5_local_dpsgd_e2:
+    name: ch5d3_C_fmnist_a0.5_local_dpsgd_e2
+    dataset: fmnist
+    partition: dirichlet
+    alpha: 0.5
+    n_clients: 100
+    model: mlp_image
+    cache_sanitized: false
+    fl:
+      rounds: 100
+      participation: 0.3
+      local_epochs: 1
+      batch_size: 64
+      lr: 0.1
+      clip_update: 9.963
+      momentum: 0.0
+      eval_every: 1
+    seeds:
+    - 0
+    - 1
+    - 2
+    eps_grid:
+    - 2
+    method:
+      method: local_dpsgd
+      delta: 1.0e-05
+      clip_grad: 1.0
+      dpsgd_conversion: balle
+      dpsgd_calibration: schedule
+  ch5d3_C_fmnist_a0.5_local_dpsgd_e5:
+    name: ch5d3_C_fmnist_a0.5_local_dpsgd_e5
+    dataset: fmnist
+    partition: dirichlet
+    alpha: 0.5
+    n_clients: 100
+    model: mlp_image
+    cache_sanitized: false
+    fl:
+      rounds: 100
+      participation: 0.3
+      local_epochs: 1
+      batch_size: 64
+      lr: 0.1
+      clip_update: 4.764
+      momentum: 0.0
+      eval_every: 1
+    seeds:
+    - 0
+    - 1
+    - 2
+    eps_grid:
+    - 5
+    method:
+      method: local_dpsgd
+      delta: 1.0e-05
+      clip_grad: 1.0
+      dpsgd_conversion: balle
+      dpsgd_calibration: schedule
+  ch5d3_C_mnist_a0.5_local_dpsgd_e0.5:
+    name: ch5d3_C_mnist_a0.5_local_dpsgd_e0.5
+    dataset: mnist
+    partition: dirichlet
+    alpha: 0.5
+    n_clients: 100
+    model: mlp_image
+    cache_sanitized: false
+    fl:
+      rounds: 100
+      participation: 0.3
+      local_epochs: 1
+      batch_size: 64
+      lr: 0.1
+      clip_update: 34.457
+      momentum: 0.0
+      eval_every: 1
+    seeds:
+    - 0
+    - 1
+    - 2
+    eps_grid:
+    - 0.5
+    method:
+      method: local_dpsgd
+      delta: 1.0e-05
+      clip_grad: 1.0
+      dpsgd_conversion: balle
+      dpsgd_calibration: schedule
+  ch5d3_C_mnist_a0.5_local_dpsgd_e10:
+    name: ch5d3_C_mnist_a0.5_local_dpsgd_e10
+    dataset: mnist
+    partition: dirichlet
+    alpha: 0.5
+    n_clients: 100
+    model: mlp_image
+    cache_sanitized: false
+    fl:
+      rounds: 100
+      participation: 0.3
+      local_epochs: 1
+      batch_size: 64
+      lr: 0.1
+      clip_update: 2.998
+      momentum: 0.0
+      eval_every: 1
+    seeds:
+    - 0
+    - 1
+    - 2
+    eps_grid:
+    - 10
+    method:
+      method: local_dpsgd
+      delta: 1.0e-05
+      clip_grad: 1.0
+      dpsgd_conversion: balle
+      dpsgd_calibration: schedule
+  ch5d3_C_mnist_a0.5_local_dpsgd_e2:
+    name: ch5d3_C_mnist_a0.5_local_dpsgd_e2
+    dataset: mnist
+    partition: dirichlet
+    alpha: 0.5
+    n_clients: 100
+    model: mlp_image
+    cache_sanitized: false
+    fl:
+      rounds: 100
+      participation: 0.3
+      local_epochs: 1
+      batch_size: 64
+      lr: 0.1
+      clip_update: 9.961
+      momentum: 0.0
+      eval_every: 1
+    seeds:
+    - 0
+    - 1
+    - 2
+    eps_grid:
+    - 2
+    method:
+      method: local_dpsgd
+      delta: 1.0e-05
+      clip_grad: 1.0
+      dpsgd_conversion: balle
+      dpsgd_calibration: schedule
+  ch5d3_C_mnist_a0.5_local_dpsgd_e5:
+    name: ch5d3_C_mnist_a0.5_local_dpsgd_e5
+    dataset: mnist
+    partition: dirichlet
+    alpha: 0.5
+    n_clients: 100
+    model: mlp_image
+    cache_sanitized: false
+    fl:
+      rounds: 100
+      participation: 0.3
+      local_epochs: 1
+      batch_size: 64
+      lr: 0.1
+      clip_update: 4.765
+      momentum: 0.0
+      eval_every: 1
+    seeds:
+    - 0
+    - 1
+    - 2
+    eps_grid:
+    - 5
+    method:
+      method: local_dpsgd
+      delta: 1.0e-05
+      clip_grad: 1.0
+      dpsgd_conversion: balle
+      dpsgd_calibration: schedule
+  ch5d3_F_adult_occ_iso_group:
+    name: ch5d3_F_adult_occ_iso_group
+    dataset: adult
+    partition: group
+    alpha: null
+    n_clients: 50
+    model: mlp_tabular
+    fl:
+      rounds: 200
+      participation: 0.2
+      local_epochs: 1
+      batch_size: 128
+      lr: 0.1
+      clip_update: 0.2
+      momentum: 0.0
+      eval_every: 1
+    seeds:
+    - 0
+    - 1
+    - 2
+    - 3
+    - 4
+    eps_grid:
+    - 10
+    - 50
+    - 100
+    - 200
+    method:
+      method: iso
+      delta: 1.0e-05
+      sigma0_method: analytic
+      sensitivity: group
+  ch5d3_F_adult_occ_iso_ref10:
+    name: ch5d3_F_adult_occ_iso_ref10
+    dataset: adult
+    partition: group
+    alpha: null
+    n_clients: 50
+    model: mlp_tabular
+    fl:
+      rounds: 200
+      participation: 0.2
+      local_epochs: 1
+      batch_size: 128
+      lr: 0.1
+      clip_update: 0.2
+      momentum: 0.0
+      eval_every: 1
+    seeds:
+    - 0
+    - 1
+    - 2
+    - 3
+    - 4
+    eps_grid:
+    - 10
+    method:
+      method: iso
+      delta: 1.0e-05
+      sigma0_method: analytic
+git_commits_of_new_runs:
+- 47d436d08d477e18ca4ff48565aace1d32167a7c-dirty
+- 48bbbba2da0af2ed86a5891a2d0d2056050ea600-dirty
+- 6b1090217eb4791ebe2768df770ee7e78a4e6021-dirty
+- 84677f24d749e8ecb131a6ae4866d40ca146465d-dirty
+- a5baaaae167c978a9a79a1c3261fe32887cecfb9
+- a5baaaae167c978a9a79a1c3261fe32887cecfb9-dirty
+- dc96f4ee5dd0129240aa387843ea1a50dfb2e393-dirty
+- dcf4fe35b5c62da60a08e4c29b8cd217313d8853-dirty
+- ed9c52d639fd3b8c673f5bfdaffba3f6e71bc6e0-dirty
+- f70eab22cad73a1d014283e52ef756ffff2be9d2-dirty
