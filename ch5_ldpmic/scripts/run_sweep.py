@@ -43,6 +43,7 @@ sys.path.insert(0, str(ROOT))
 import torch  # noqa: E402
 
 from ldpmic import data as ldata  # noqa: E402
+from ldpmic.data import common as ldata_common  # noqa: E402
 from ldpmic import fl, pipeline  # noqa: E402
 from ldpmic.models import build_model, num_params  # noqa: E402
 
@@ -168,7 +169,7 @@ def execute(r: dict, out_dir: Path, command: str) -> dict:
         X_eval_raw, y_eval = ds.X_test, ds.y_test
         if r.get("validation"):
             vfrac, vseed = float(r["validation"]["frac"]), int(r["validation"]["seed"])
-            vrng = np.random.default_rng(ldata.hash_seed(vseed, "validation", ds.name, r["partition"], n_clients))
+            vrng = np.random.default_rng(ldata_common.hash_seed(vseed, "validation", ds.name, r["partition"], n_clients))
             keep, held = [], []
             for X, y in cdata:
                 perm = vrng.permutation(len(y))
