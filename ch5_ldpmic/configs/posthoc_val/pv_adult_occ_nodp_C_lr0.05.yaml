@@ -1,0 +1,30 @@
+# pv_adult_occ_nodp_C_lr0.05 - post-hoc robustness check (not a reported run): the update-clipping choice of
+# adult_occ_nodp repeated on the validation split at the validation-chosen learning rate 0.05 (pv_adult_occ_nodp_lr),
+# as the original protocol tuned C at the frozen learning rate. Otherwise identical to pv_adult_occ_nodp_C.
+name: pv_adult_occ_nodp_C_lr0.05
+dataset: adult
+partition: group
+alpha: null
+n_clients: 50
+model: mlp_tabular
+fl:
+  rounds: 200
+  participation: 0.2
+  local_epochs: 1
+  batch_size: 128
+  lr: 0.05
+  clip_update: 0.2
+  momentum: 0.0
+  eval_every: 1
+method:
+  method: nodp
+  delta: 1.0e-05
+seeds:
+- 0
+validation:
+  frac: 0.15
+  seed: 0
+clip_grid:
+- 0.05
+- 0.1
+- 0.2
