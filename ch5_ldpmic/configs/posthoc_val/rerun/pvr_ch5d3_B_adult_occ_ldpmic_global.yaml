@@ -1,0 +1,38 @@
+# pvr_ch5d3_B_adult_occ_ldpmic_global - post-hoc robustness rerun (not a reported run): configs/ch5d3_B_adult_occ_ldpmic_global.yaml with seed 0 only and the
+# validation-chosen values (lr 0.05; update bound 0.1 where the reported run used 0.2); was lr 0.1, C None.
+# Evaluated on the test split, as the reported run.
+name: pvr_ch5d3_B_adult_occ_ldpmic_global
+dataset: adult
+partition: group
+alpha: null
+n_clients: 50
+model: mlp_tabular
+fl:
+  rounds: 200
+  participation: 0.2
+  local_epochs: 1
+  batch_size: 128
+  lr: 0.05
+  clip_update: null
+  momentum: 0.0
+  eval_every: 1
+seeds:
+- 0
+eps_grid:
+- 0.5
+- 1
+- 2
+- 5
+- 10
+method:
+  method: ldpmic
+  delta: 1.0e-05
+  eps1_frac: 0.2
+  allocation: global
+  share_mode: exp
+  beta: 2.0
+  score: fixed_grid
+  G: 10
+  score_sensitivity: conservative
+  sigma0_method: analytic
+  input_rescale: 0.25
