@@ -1,0 +1,30 @@
+# pv_adult_occ_nodp_C - post-hoc robustness check (not a reported run): the update-clipping choice of adult_occ_nodp repeated on a validation split
+# (15% of each client's training records, seed 0); copied from the stored config of adult_occ_nodp_C0.2_s0_35a0e827.json.
+# Candidates C {0.05, 0.1, 0.2}; rule: highest final validation accuracy (reproduces every recorded test-split choice).
+name: pv_adult_occ_nodp_C
+dataset: adult
+partition: group
+alpha: null
+n_clients: 50
+model: mlp_tabular
+fl:
+  rounds: 200
+  participation: 0.2
+  local_epochs: 1
+  batch_size: 128
+  lr: 0.1
+  clip_update: 0.2
+  momentum: 0.0
+  eval_every: 1
+method:
+  method: nodp
+  delta: 1.0e-05
+seeds:
+- 0
+validation:
+  frac: 0.15
+  seed: 0
+clip_grid:
+- 0.05
+- 0.1
+- 0.2

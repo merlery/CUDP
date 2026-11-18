@@ -161,6 +161,25 @@ def execute(r: dict, out_dir: Path, command: str) -> dict:
         if r.get("smoke_max_records_per_client"):
             k = int(r["smoke_max_records_per_client"])
             cdata = [(X[:k], y[:k]) for X, y in cdata]
+        # Optional post-hoc validation split (absent in every reported run): a
+        # fixed share of EACH client's training records is held out, the model
+        # trains on the rest and is evaluated on the pooled held-out records
+        # instead of the test split.  The test split is not read.
+        X_eval_raw, y_eval = ds.X_test, ds.y_test
+        if r.get("validation"):
+            vfrac, vseed = float(r["validation"]["frac"]), int(r["validation"]["seed"])
+            vrng = np.random.default_rng(ldata.hash_seed(vseed, "validation", ds.name, r["partition"], n_clients))
+            keep, held = [], []
+            for X, y in cdata:
+                perm = vrng.permutation(len(y))
+                n_val = int(round(vfrac * len(y)))
+                keep.append((X[perm[n_val:]], y[perm[n_val:]]))
+                held.append((X[perm[:n_val]], y[perm[:n_val]]))
+            cdata = keep
+            X_eval_raw = np.concatenate([X for X, _ in held])
+            y_eval = np.concatenate([y for _, y in held])
+            prov["validation"] = {"frac": vfrac, "seed": vseed, "n_train": int(sum(len(y) for _, y in keep)),
+                                  "n_validation": int(len(y_eval)), "evaluated_on": "validation (test split not used)"}
         flc = r["fl"]
         if flc.get("lr") is None:
             raise ValueError("fl.lr is not set: tune it first (--lr-grid) and freeze it in the config")
@@ -204,13 +223,13 @@ def execute(r: dict, out_dir: Path, command: str) -> dict:
         prov["build_time_s"] = time.perf_counter() - t_build
         fl.seed_everything(r["seed"])
         model = build_model(r["model"], info.input_dim or ds.d, ds.n_classes)
-        X_test_np = scaler(ds.X_test)
+        X_test_np = scaler(X_eval_raw)
         if info.selected_features:
             X_test_np = X_test_np[:, np.array(info.selected_features)]
         if info.input_rescale_test:
             X_test_np = X_test_np / np.asarray(info.input_rescale_test)
         X_test = torch.as_tensor(X_test_np, dtype=torch.float32)
-        y_test = torch.as_tensor(ds.y_test, dtype=torch.long)
+        y_test = torch.as_tensor(y_eval, dtype=torch.long)
         rows = []
 
         def log(rec):
@@ -242,7 +261,7 @@ def execute(r: dict, out_dir: Path, command: str) -> dict:
             model.eval()
             pred = torch.cat([model(X_test[i:i + 4096]) for i in range(0, X_test.shape[0], 4096)]).argmax(dim=1).numpy()
         cm = np.zeros((ds.n_classes, ds.n_classes), dtype=int)
-        np.add.at(cm, (np.asarray(ds.y_test, dtype=int), pred), 1)
+        np.add.at(cm, (np.asarray(y_eval, dtype=int), pred), 1)
         prov["confusion_matrix"] = cm.tolist()
         xs = [c.X for c in clients if isinstance(getattr(c, "X", None), torch.Tensor)]
         if xs:      # mean absolute value of the inputs as they enter the network (training side)

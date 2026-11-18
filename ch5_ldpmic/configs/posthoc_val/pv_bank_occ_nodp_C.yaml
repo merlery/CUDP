@@ -1,0 +1,30 @@
+# pv_bank_occ_nodp_C - post-hoc robustness check (not a reported run): the update-clipping choice of bank_occ_nodp repeated on a validation split
+# (15% of each client's training records, seed 0); copied from the stored config of bank_occ_nodp_C0.05_s0_339acdc9.json.
+# Candidates C {0.05, 0.1, 0.2}; rule: highest final validation accuracy (reproduces every recorded test-split choice).
+name: pv_bank_occ_nodp_C
+dataset: bank
+partition: group
+alpha: null
+n_clients: 50
+model: mlp_tabular
+fl:
+  rounds: 200
+  participation: 0.2
+  local_epochs: 1
+  batch_size: 128
+  lr: 0.05
+  clip_update: 0.05
+  momentum: 0.0
+  eval_every: 1
+method:
+  method: nodp
+  delta: 1.0e-05
+seeds:
+- 0
+validation:
+  frac: 0.15
+  seed: 0
+clip_grid:
+- 0.05
+- 0.1
+- 0.2
